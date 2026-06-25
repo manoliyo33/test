@@ -24314,4 +24314,3 @@ const questionsDB = [
         feedback: "xAPI permite registrar experiencias de aprendizaje distribuidas, incluso fuera del aula virtual, a diferencia de SCORM."
     },
 ];
-];
