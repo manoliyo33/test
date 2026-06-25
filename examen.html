@@ -259,6 +259,46 @@
         .ex-del:hover { background: var(--red-bg); color: var(--red); }
         .ex-tag { font-size: 11px; font-weight: 700; color: var(--primary-dark); background: var(--primary-light); padding: 1px 8px; border-radius: 99px; margin-left: 4px; white-space: nowrap; }
 
+        /* ---- Añadir preguntas / revisión CSS (Integrado) ---- */
+        #pdfInput { padding: 8px; border: 1px solid #cbd5e1; border-radius: 9px; background: #fff; font-family: inherit; max-width: 100%; }
+        .review-card { border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; margin-bottom: 14px; background: #fff; }
+        .review-card.err { border-color: #fca5a5; background: var(--red-bg); }
+        .review-top { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 10px; }
+        .review-inc { display: flex; align-items: center; gap: 7px; font-weight: 600; font-size: 14px; cursor: pointer; }
+        .review-inc input { width: 17px; height: 17px; accent-color: var(--primary); cursor: pointer; }
+        .review-count { background: var(--primary-light); color: var(--primary-dark); font-weight: 700; font-size: 13px; padding: 3px 12px; border-radius: 99px; }
+        .review-file { font-size: 13px; color: var(--muted); margin-left: auto; max-width: 50%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .review-namelbl { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 5px; }
+        .review-namelbl em { color: var(--amber); font-weight: 500; }
+        .review-name { width: 100%; padding: 11px 14px; border: 1.5px solid var(--primary); border-radius: 9px; font-size: 15px; font-family: inherit; font-weight: 600; color: #0f172a; }
+        .review-warn { font-size: 13px; color: var(--amber); margin-top: 7px; }
+        .review-details { margin-top: 12px; }
+        .review-details summary { cursor: pointer; font-size: 13px; color: var(--primary); font-weight: 600; }
+        .review-q { border-top: 1px solid var(--border); padding: 10px 0; font-size: 14px; }
+        .review-q ul { margin: 6px 0; padding-left: 22px; }
+        .review-q li.q-ok { color: var(--green); font-weight: 700; }
+        .review-fb { font-size: 13px; color: var(--muted); font-style: italic; margin-top: 4px; }
+        
+        .dup-summary { background: #f8fafc; border: 1px solid var(--border); border-radius: 11px; padding: 12px 16px; margin-bottom: 16px; font-size: 14.5px; }
+        .dup-toggle { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 14px; font-weight: 600; cursor: pointer; }
+        .dup-toggle input { width: 17px; height: 17px; accent-color: var(--primary); cursor: pointer; }
+        .review-count.dup { background: var(--amber-bg); color: var(--amber); }
+        .review-q.is-dup { opacity: 0.7; }
+        .dup-badge { font-size: 12px; font-weight: 700; color: var(--amber); background: var(--amber-bg); padding: 1px 8px; border-radius: 99px; margin-left: 8px; }
+        .dup-report-box { margin-top: 12px; background: #fff; border: 1px solid var(--border); border-radius: 11px; padding: 14px 16px; font-size: 14px; }
+        .dup-groups { margin-top: 10px; max-height: 300px; overflow-y: auto; }
+        .dup-group { border-top: 1px solid var(--border); padding: 8px 0; }
+        .dup-q { font-weight: 600; font-size: 13.5px; }
+        .dup-meta { font-size: 12px; color: var(--muted); font-weight: 500; }
+        .dup-occs { margin-top: 6px; display: flex; flex-direction: column; gap: 5px; }
+        .dup-occ { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 5px 10px; }
+        .dup-occ-topic { font-size: 13px; color: #334155; }
+        .dup-occ-topic em { color: var(--amber); font-style: normal; font-weight: 700; }
+        .dup-occ-del { flex-shrink: 0; white-space: nowrap; }
+        .perm-warn { background: var(--amber-bg); border: 1px solid #fcd34d; border-radius: 11px; padding: 14px 16px; margin-top: 12px; font-size: 14px; color: #78350f; }
+        .perm-warn p { margin: 8px 0; }
+        .perm-warn code { background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 4px; }
+
         @media (max-width: 640px) {
             .container { padding: 18px 16px; }
             .topic-grid { grid-template-columns: 1fr; max-height: 300px; }
@@ -270,7 +310,6 @@
     </style>
 
     <script src="preguntas.js"></script>
-    
     <script src="Examen1_TFA_SI.js"></script>
     <script src="Examen2_TFA_SI.js"></script>
     <script src="Examen1_TMFA_SI.js"></script>
@@ -363,7 +402,7 @@
             </div>
             
             <div id="simulacroList">
-                </div>
+            </div>
         </div>
     </div>
 
@@ -372,7 +411,24 @@
     </div>
 
     <div class="container view" id="view-addq">
-        <p class="empty-msg"><em>* Pestaña reservada para tu módulo de importación.</em></p>
+        <div class="config-section">
+            <h3>➕ Añadir preguntas desde PDF</h3>
+            <p style="margin:0 0 14px; font-size:14px; color:var(--muted);">
+                Sube uno o varios PDF con el formato habitual (pregunta, opciones <em>a) b) c) d)</em>,
+                <em>Respuesta correcta:</em> y <em>Explicación:</em>). Se detectarán automáticamente los temas y
+                podrás revisar y confirmar el nombre antes de incorporarlos al banco.
+            </p>
+            <div class="config-actions" style="margin-top:0;">
+                <input type="file" id="pdfInput" accept="application/pdf,.pdf" multiple
+                       style="font-size:14px;">
+                <button class="btn-primary" style="padding:10px 22px; font-size:15px;" onclick="procesarPDFs()">📄 Procesar PDFs</button>
+            </div>
+            <div class="toast" id="pdfStatus"></div>
+        </div>
+
+        <div id="reviewContainer"></div>
+
+        <div id="manageContainer"></div>
     </div>
 
     <script>
@@ -388,6 +444,15 @@
         let examElapsed = 0;
         let examEtiqueta = '';
         let lastFailed = [];
+        
+        // Variables módulo PDF
+        let lotesDetectados = [];
+        let omitirDuplicadas = true;
+
+        // Inicializar PDF Worker si está disponible
+        if (typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdf.worker.min.js';
+        }
 
         // ===================================================
         //  BANCO DE PREGUNTAS Y FAVORITOS
@@ -395,6 +460,7 @@
         function getUserQuestions() { try { return JSON.parse(localStorage.getItem(USERQ_KEY)) || []; } catch (e) { return []; } }
         function setUserQuestions(arr) { localStorage.setItem(USERQ_KEY, JSON.stringify(arr)); }
         function getDeleted() { try { return JSON.parse(localStorage.getItem(DELETED_KEY)) || []; } catch (e) { return []; } }
+        function setDeleted(arr) { localStorage.setItem(DELETED_KEY, JSON.stringify(arr)); }
         function getFavTopics() { try { return JSON.parse(localStorage.getItem(FAV_TOPICS_KEY)) || []; } catch (e) { return []; } }
         function setFavTopics(arr) { localStorage.setItem(FAV_TOPICS_KEY, JSON.stringify(arr)); }
         
@@ -423,15 +489,15 @@
             document.getElementById('tabStatsBtn').classList.toggle('active', tab === 'stats');
             document.getElementById('tabAddqBtn').classList.toggle('active', tab === 'addq');
             if (tab === 'stats') renderStats();
+            if (tab === 'addq') renderManage(); // Re-renderizar panel de gestión al abrir
         }
 
         // ===================================================
-        //  SIMULACROS (NUEVO)
+        //  SIMULACROS
         // ===================================================
         function renderSimulacros() {
             const list = document.getElementById('simulacroList');
             
-            // Aquí configuramos los exámenes subidos. El "varName" debe coincidir con el nombre de la variable en los .js
             const simulacros = [
                 { id: 'tfa1', title: 'Examen 1 - Técnico/a Función Admin. (Acceso Libre)', varName: 'examen1_TFA', data: typeof examen1_TFA !== 'undefined' ? examen1_TFA : null },
                 { id: 'tfa2', title: 'Examen 2 - Técnico/a Función Admin. (Promoción Interna)', varName: 'examen2_TFA', data: typeof examen2_TFA !== 'undefined' ? examen2_TFA : null },
@@ -474,13 +540,12 @@
             }
 
             const mezclar = document.getElementById('mezclarSimulacro').checked;
-            let questionsToLoad = [...data]; // Hacer copia del array
+            let questionsToLoad = [...data]; 
             
             if (mezclar) {
                 questionsToLoad.sort(() => Math.random() - 0.5);
             }
 
-            // Usamos la misma función del examen normal, pero pasándole la etiqueta del simulacro
             startExam(questionsToLoad, "Simulacro: " + title);
         }
 
@@ -634,10 +699,8 @@
             document.getElementById('progressMarked').style.display = 'none';
             updateProgress();
             startTimer();
-            // Siempre saltamos a la pestaña de examen aunque vengamos desde Simulacros
             switchTab('examen');
             
-            // Ocultamos la caja de configuración para que se vea directo el examen
             document.getElementById('configSection').style.display = 'none';
             document.getElementById('examProgress').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
@@ -749,7 +812,6 @@
 
             document.getElementById('submitBtn').style.display = 'none';
             
-            // Botón para volver a configurar examen en esa pestaña
             const volverConfig = `<button class="btn-grey" style="margin-top:16px;" onclick="goHome()">⬅️ Volver al inicio</button>`;
 
             document.getElementById('resultContainer').innerHTML = `
@@ -796,53 +858,500 @@
         }
 
         // ===================================================
-        //  🏠 VOLVER AL INICIO (sin recargar página)
+        //  🏠 VOLVER AL INICIO 
         // ===================================================
         function goHome() {
-            // 1. Detener el temporizador si está activo
-            if (timerInterval) {
-                clearInterval(timerInterval);
-                timerInterval = null;
-            }
-            
-            // 2. Restablecer variables de estado
+            if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
             currentQuestions = [];
             markedForReview = new Set();
             examEtiqueta = '';
             
-            // 3. Mostrar la sección de configuración
             document.getElementById('configSection').style.display = 'block';
-            
-            // 4. Ocultar la barra de progreso
             document.getElementById('examProgress').classList.remove('show');
-            
-            // 5. Limpiar el contenedor de preguntas
-            document.getElementById('quizContainer').innerHTML = `
-                <p class="empty-msg">
-                    <span class="big-emoji">🎯</span>
-                    Selecciona los temas y pulsa «Empezar Examen».
-                </p>
-            `;
-            
-            // 6. Limpiar resultados
+            document.getElementById('quizContainer').innerHTML = `<p class="empty-msg"><span class="big-emoji">🎯</span>Selecciona los temas y pulsa «Empezar Examen».</p>`;
             document.getElementById('resultContainer').innerHTML = '';
-            
-            // 7. Ocultar botón de corrección
             document.getElementById('submitBtn').style.display = 'none';
-            
-            // 8. Restablecer el temporizador visual
             document.getElementById('examTimer').textContent = '⏱️ 00:00';
             
-            // 9. Asegurar que estamos en la pestaña de examen
             switchTab('examen');
-            
-            // 10. Scroll suave al inicio de la configuración
             document.getElementById('configSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
-        // Utils
-        function normQ(s) { return String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9ñ]+/g, ' ').trim(); }
-        function escapeHTML(str) { return String(str??'').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+        // ===================================================
+        //  MÓDULO AÑADIR PREGUNTAS (Integrado)
+        // ===================================================
+
+        async function extraerTextoPDF(file) {
+            const buf = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+            let texto = '';
+            for (let p = 1; p <= pdf.numPages; p++) {
+                const page = await pdf.getPage(p);
+                const content = await page.getTextContent();
+                let last = null;
+                for (const item of content.items) {
+                    if (!('str' in item)) continue;
+                    texto += item.str;
+                    if (item.hasEOL) texto += '\n';
+                    else if (item.str && !item.str.endsWith(' ')) texto += ' ';
+                    last = item;
+                }
+                texto += '\n';
+            }
+            return texto;
+        }
+
+        function cleanName(s) { return String(s || '').replace(/\s+/g, ' ').replace(/\s*\.\s*$/, '').trim(); }
+
+        function parsearTexto(texto, filenameBase) {
+            const rawLines = texto.split('\n');
+            const CHK = '\\u2705\\u2713\\u2714\\u2611\\u2714\\uFE0F'; 
+            const reCheck   = new RegExp('[' + CHK + ']', 'u');
+            const reCheckG  = new RegExp('[' + CHK + ']', 'gu');
+            const reTopic   = /^\s*TEMA\b[^\n]*?\d+/i;              
+            const reQuestion = /^\s*(\d{1,3})\s*[\.\)]\s*(\D.*)/;   
+            const reOption  = /^\s*([a-dA-D])\s*[\)\.]\s*(\S.*)/;   
+            const reAnswer  = /^\s*Respuesta\s+correcta\s*:?\s*([a-dA-D])?/i;
+            const reMark    = new RegExp('^\\s*[' + CHK + ']+\\s*([a-dA-D])\\s*[\\)\\.]\\s*(.*)', 'u'); 
+            const reExpl    = /^\s*(?:Explicaci[oó]n|Justificaci[oó]n)\s*:?\s*(.*)/i;
+            const reSection = /^\s*\p{Extended_Pictographic}[\p{Extended_Pictographic}️‍\s]*(.+)$/u;
+            const stripChk  = s => String(s || '').replace(reCheckG, '').replace(/\s+/g, ' ').trim();
+
+            const units = [];
+            let cur = null;
+            const push = () => { if (cur && cur.text.trim()) units.push(cur); cur = null; };
+
+            for (let raw of rawLines) {
+                const line = raw.replace(/\s+/g, ' ').trim();
+                if (!line) { push(); continue; }
+
+                let m;
+                if (reTopic.test(line) && !reQuestion.test(line)) {
+                    push(); cur = { type: 'TOPIC', text: line };
+                } else if ((m = line.match(reAnswer))) {
+                    push(); cur = { type: 'ANSWER', text: line, letter: m[1] ? m[1].toLowerCase() : null, feedback: '' };
+                } else if ((m = line.match(reMark))) {
+                    const resto = m[2] || '';
+                    const par = resto.match(/\(([^)]+)\)\s*$/);
+                    push(); cur = { type: 'ANSWER', text: line, letter: m[1].toLowerCase(), feedback: par ? par[1].trim() : '' };
+                } else if ((m = line.match(reExpl))) {
+                    push(); cur = { type: 'EXPL', text: m[1] || '' };
+                } else if ((m = line.match(reOption))) {
+                    push(); cur = { type: 'OPTION', text: stripChk(m[2] || ''), letter: m[1].toLowerCase(), correctInline: reCheck.test(line) };
+                } else if ((m = line.match(reQuestion))) {
+                    push(); cur = { type: 'QUESTION', text: m[2] || '', num: m[1] };
+                } else if ((m = line.match(reSection)) && /\p{L}/u.test(m[1])) {
+                    const titulo = m[1].replace(/^\s*\d{1,3}\s*[\.\)]\s*/, '').trim();
+                    if (titulo) { push(); cur = { type: 'TOPIC', text: titulo }; }
+                    else if (cur) { cur.text += ' ' + line; }
+                } else if (cur) {
+                    cur.text += ' ' + line;
+                } else {
+                    cur = { type: 'TEXT', text: line };
+                }
+            }
+            push();
+
+            const secciones = new Map();   
+            let currentTopic = null;
+            let q = null;
+
+            const finalizar = () => {
+                if (q && q.options.length >= 2 && q.letter) {
+                    const idx = q.letter.charCodeAt(0) - 97;
+                    if (idx >= 0 && idx < q.options.length) {
+                        const topic = currentTopic || cleanName(filenameBase);
+                        if (!secciones.has(topic)) secciones.set(topic, []);
+                        secciones.get(topic).push({
+                            topic,
+                            question: stripChk(q.question),
+                            options: q.options.map(o => stripChk(o)),
+                            correctAnswer: idx,
+                            feedback: stripChk(q.feedback)
+                        });
+                    }
+                }
+                q = null;
+            };
+
+            for (const u of units) {
+                if (u.type === 'TOPIC') {
+                    finalizar();
+                    currentTopic = cleanName(u.text);
+                } else if (u.type === 'QUESTION') {
+                    finalizar();
+                    q = { question: u.text, options: [], optLetters: new Set(), letter: null, feedback: '' };
+                } else if (u.type === 'OPTION') {
+                    if (q) {
+                        const inlineCheck = u.correctInline || reCheck.test(u.text);
+                        if (q.optLetters.has(u.letter)) {
+                            q.letter = u.letter;
+                        } else {
+                            q.options.push(stripChk(u.text));
+                            q.optLetters.add(u.letter);
+                            if (inlineCheck) q.letter = u.letter;   
+                        }
+                    }
+                } else if (u.type === 'ANSWER') {
+                    if (q) {
+                        q.letter = u.letter || q.letter;
+                        if (u.feedback && !q.feedback) q.feedback = u.feedback;
+                    }
+                } else if (u.type === 'EXPL') {
+                    if (q) q.feedback = u.text;
+                }
+            }
+            finalizar();
+
+            const secciónUnica = secciones.size <= 1;
+            const fnTieneTitulo = /tema\s*\d+\s*[.:\-]\s*\S/i.test(filenameBase);
+
+            return [...secciones.entries()].map(([topic, questions]) => {
+                let sugerido = topic;
+                if (secciónUnica) { sugerido = fnTieneTitulo ? cleanName(filenameBase) : (topic || cleanName(filenameBase)); }
+                return { sugerido: cleanName(sugerido), detectado: topic, questions };
+            });
+        }
+
+        async function procesarPDFs() {
+            const input = document.getElementById('pdfInput');
+            const status = document.getElementById('pdfStatus');
+            const files = Array.from(input.files || []);
+
+            if (!files.length) { status.className = 'toast err'; status.textContent = '⚠️ Selecciona al menos un PDF.'; return; }
+            if (typeof pdfjsLib === 'undefined') { status.className = 'toast err'; status.textContent = '❌ No se ha cargado pdf.js.'; return; }
+
+            lotesDetectados = [];
+            status.className = 'toast';
+            status.textContent = '';
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                status.className = 'toast';
+                status.textContent = `⏳ Leyendo ${i + 1}/${files.length}: ${file.name}…`;
+                try {
+                    const texto = await extraerTextoPDF(file);
+                    const base = file.name.replace(/\.pdf$/i, '');
+                    const secciones = parsearTexto(texto, base);
+                    secciones.forEach(sec => {
+                        if (sec.questions.length > 0) lotesDetectados.push({ archivo: file.name, ...sec, incluir: true });
+                    });
+                } catch (e) {
+                    console.error('Error leyendo', file.name, e);
+                    lotesDetectados.push({ archivo: file.name, error: e.message, questions: [] });
+                }
+            }
+
+            const totalQ = lotesDetectados.reduce((s, l) => s + (l.questions ? l.questions.length : 0), 0);
+            status.className = totalQ ? 'toast ok' : 'toast err';
+            status.textContent = totalQ
+                ? `✅ Detectadas ${totalQ} pregunta(s) en ${lotesDetectados.filter(l => l.questions.length).length} tema(s). Revisa y guarda.`
+                : '⚠️ No se han detectado preguntas con el formato esperado. Revisa el PDF.';
+            renderReview();
+        }
+
+        function renderReview() {
+            const cont = document.getElementById('reviewContainer');
+            if (!lotesDetectados.length) { cont.innerHTML = ''; return; }
+
+            const bankNorm = new Set(getBank().map(q => normQ(q.question)));
+            const vistasImport = new Set();   
+            let totalNuevas = 0, totalEnBanco = 0, totalEnImport = 0;
+
+            lotesDetectados.forEach(lote => {
+                if (lote.error || !lote.questions) return;
+                lote.dupBanco = 0; lote.dupImport = 0; lote.nuevas = 0;
+                lote.questions.forEach(q => {
+                    const n = normQ(q.question);
+                    if (bankNorm.has(n)) { q._dup = 'banco'; lote.dupBanco++; totalEnBanco++; }
+                    else if (vistasImport.has(n)) { q._dup = 'import'; lote.dupImport++; totalEnImport++; }
+                    else { q._dup = null; lote.nuevas++; totalNuevas++; vistasImport.add(n); }
+                });
+            });
+            const totalDup = totalEnBanco + totalEnImport;
+
+            let html = '<div class="config-section"><h3>🔍 Revisión antes de guardar</h3>';
+            html += `<div class="dup-summary"><div>✅ <strong>${totalNuevas}</strong> nuevas`
+                        + (totalEnBanco ? ` &nbsp;·&nbsp; ♻️ <strong>${totalEnBanco}</strong> ya en el banco` : '')
+                        + (totalEnImport ? ` &nbsp;·&nbsp; 🔁 <strong>${totalEnImport}</strong> repetidas en estos PDFs` : '')
+                        + `</div>`;
+            if (totalDup) {
+                html += `<label class="dup-toggle"><input type="checkbox" id="omitirDupChk" ${omitirDuplicadas ? 'checked' : ''} onchange="setOmitirDup(this.checked)"> Omitir las preguntas duplicadas (recomendado)</label>`;
+            }
+            html += '</div>';
+
+            const bankTopics = new Set(getBank().map(q => q.topic));
+            lotesDetectados.forEach((lote, idx) => {
+                if (lote.error) {
+                    html += `<div class="review-card err"><strong>❌ ${escapeHTML(lote.archivo)}</strong><br><span style="font-size:13px;color:var(--red);">Error: ${escapeHTML(lote.error)}</span></div>`;
+                    return;
+                }
+                const yaExiste = bankTopics.has(lote.sugerido);
+                const noEncontrado = !lote.detectado;
+                const dupTotal = lote.dupBanco + lote.dupImport;
+                html += `
+                    <div class="review-card">
+                        <div class="review-top">
+                            <label class="review-inc"><input type="checkbox" ${lote.incluir ? 'checked' : ''} onchange="toggleLote(${idx}, this.checked)"> Incluir</label>
+                            <span class="review-count">${lote.nuevas} nueva(s)</span>
+                            ${dupTotal ? `<span class="review-count dup">♻️ ${dupTotal} duplicada(s)</span>` : ''}
+                            <span class="review-file" title="${escapeHTML(lote.archivo)}">📄 ${escapeHTML(lote.archivo)}</span>
+                        </div>
+                        <label class="review-namelbl">Nombre del tema ${noEncontrado ? '<em>(no detectado en el PDF, ponle nombre)</em>' : '(confirma o edita)'}:</label>
+                        <input type="text" class="review-name" id="loteName${idx}" value="${escapeHTML(lote.sugerido)}" oninput="setLoteName(${idx}, this.value)">
+                        ${yaExiste ? '<div class="review-warn">⚠️ Ya existe un tema con este nombre: las preguntas se añadirán a ese tema.</div>' : ''}
+                        <details class="review-details">
+                            <summary>Ver preguntas detectadas</summary>
+                            ${lote.questions.slice(0, 60).map((q, i) => `
+                                <div class="review-q ${q._dup ? 'is-dup' : ''}">
+                                    <strong>${i + 1}. ${escapeHTML(q.question)}</strong>
+                                    ${q._dup ? `<span class="dup-badge">${q._dup === 'banco' ? '♻️ ya en el banco' : '🔁 repetida'}</span>` : ''}
+                                    <ul>${q.options.map((o, oi) => `<li class="${oi === q.correctAnswer ? 'q-ok' : ''}">${escapeHTML(o)}${oi === q.correctAnswer ? ' ✓' : ''}</li>`).join('')}</ul>
+                                    ${q.feedback ? `<div class="review-fb">💡 ${escapeHTML(q.feedback)}</div>` : ''}
+                                </div>
+                            `).join('')}
+                            ${lote.questions.length > 60 ? `<p style="color:var(--muted);font-size:13px;">… y ${lote.questions.length - 60} más</p>` : ''}
+                        </details>
+                    </div>`;
+            });
+
+            html += `<div class="save-row" style="margin-top:18px;"><button class="btn-success" style="padding:12px 26px;font-size:15px;" onclick="guardarLotes()">💾 Guardar en el banco</button><button class="btn-grey btn-sm" onclick="cancelarLotes()">Cancelar</button></div></div>`;
+            cont.innerHTML = html;
+        }
+
+        function setOmitirDup(val) { omitirDuplicadas = val; }
+        function toggleLote(idx, val) { lotesDetectados[idx].incluir = val; }
+        function setLoteName(idx, val) { lotesDetectados[idx].sugerido = val; }
+        function cancelarLotes() { lotesDetectados = []; document.getElementById('reviewContainer').innerHTML = ''; document.getElementById('pdfStatus').textContent=''; }
+
+        function guardarLotes() {
+            const userQ = getUserQuestions();
+            const bankNorm = new Set(getBank().map(q => normQ(q.question)));
+            const seen = new Set();   
+
+            let añadidas = 0, omitidasBanco = 0, repetidas = 0, temasAfectados = new Set();
+            lotesDetectados.forEach(lote => {
+                if (!lote.incluir || !lote.questions || lote.error) return;
+                const nombre = cleanName(lote.sugerido);
+                if (!nombre) return;
+                lote.questions.forEach(q => {
+                    const n = normQ(q.question);
+                    if (seen.has(n)) { repetidas++; return; }            
+                    if (bankNorm.has(n) && omitirDuplicadas) { omitidasBanco++; return; } 
+                    seen.add(n);
+                    userQ.push({ topic: nombre, question: q.question, options: q.options, correctAnswer: q.correctAnswer, feedback: q.feedback, _origen: 'pdf' });
+                    añadidas++; temasAfectados.add(nombre);
+                });
+            });
+
+            setUserQuestions(userQ);
+            lotesDetectados = [];
+            document.getElementById('reviewContainer').innerHTML = '';
+
+            const omitidas = omitidasBanco + repetidas;
+            const status = document.getElementById('pdfStatus');
+            status.className = 'toast ok';
+            status.textContent = `✅ Añadidas ${añadidas} pregunta(s) en ${temasAfectados.size} tema(s)` + (omitidas ? ` · omitidas ${omitidas} duplicada(s)` + (omitidasBanco ? ` (${omitidasBanco} ya en el banco)` : '') + '.' : '.');
+
+            populateTopics();   
+            renderManage();
+        }
+
+        function renderManage() {
+            const cont = document.getElementById('manageContainer');
+            const userQ = getUserQuestions();
+            if (!userQ.length) {
+                cont.innerHTML = `<div class="config-section"><h3>📂 Preguntas añadidas</h3><p style="font-size:14px;color:var(--muted);margin:0;">Aún no has añadido preguntas propias. Las que importes desde PDF aparecerán aquí y en «Temas disponibles».</p></div>`;
+                return;
+            }
+            const porTema = {};
+            userQ.forEach(q => { porTema[q.topic] = (porTema[q.topic] || 0) + 1; });
+            const temas = Object.entries(porTema).sort((a, b) => extractNumber(a[0]) - extractNumber(b[0]));
+
+            let html = `<div class="config-section"><h3>📂 Preguntas añadidas (${userQ.length} en ${temas.length} tema(s))</h3><div class="exam-list">`;
+            temas.forEach(([t, n]) => {
+                html += `<div class="exam-row"><div class="ex-date">${escapeHTML(t)}<div class="ex-meta">${n} pregunta(s) añadidas</div></div><button class="ex-del" title="Eliminar las preguntas añadidas de este tema" onclick="borrarTemaAñadido('${encodeURIComponent(t)}')">🗑️</button></div>`;
+            });
+            html += `</div><div class="stats-toolbar" style="margin-top:14px;">
+                        <button class="btn-sm btn-save" onclick="pedirPermanente()">💾 Hacer permanente (sobrescribir preguntas.js)</button>
+                        <button class="btn-sm btn-grey" onclick="buscarDuplicadosBanco()">🔍 Buscar duplicados en el banco</button>
+                        <button class="btn-sm btn-grey" onclick="exportarBanco()">⬇️ Exportar (descargar)</button>
+                        <button class="btn-sm btn-outline-red" onclick="borrarTodasAñadidas()">🗑️ Borrar todas las añadidas</button>
+                     </div><div id="permWarn"></div><div id="dupReport"></div><p class="save-hint" style="text-align:left;">Las preguntas añadidas se guardan en este navegador y ya funcionan en exámenes y estadísticas. Con <strong>«Hacer permanente»</strong> se escriben directamente en <code>preguntas.js</code> (solo Chrome/Edge); «Exportar» las descarga por si prefieres reemplazar el fichero a mano.</p></div>`;
+            cont.innerHTML = html;
+        }
+
+        function buscarDuplicadosBanco() {
+            const rep = document.getElementById('dupReport');
+            if (!rep) return;
+            const bank = getBank();
+            const grupos = new Map();   
+            bank.forEach(q => {
+                const n = normQ(q.question);
+                if (!n) return;
+                if (!grupos.has(n)) grupos.set(n, []);
+                grupos.get(n).push(q);
+            });
+            const dups = [...grupos.values()].filter(g => g.length > 1);
+
+            if (!dups.length) {
+                rep.innerHTML = `<div class="review-warn" style="background:var(--green-bg);border:1px solid #86efac;color:#14532d;border-radius:10px;padding:12px 14px;margin-top:12px;">✅ No se han encontrado preguntas repetidas en el banco (${bank.length} preguntas analizadas).</div>`;
+                return;
+            }
+
+            const userQ = getUserQuestions();
+            const baseNorm = new Set(bank.filter(q => q._origen !== 'pdf').map(q => normQ(q.question)));
+            let eliminables = 0;
+            const vistasUser = new Set();
+            userQ.forEach(q => {
+                const n = normQ(q.question);
+                if (baseNorm.has(n) || vistasUser.has(n)) eliminables++;
+                else vistasUser.add(n);
+            });
+
+            const totalRepetidas = dups.reduce((s, g) => s + (g.length - 1), 0);
+            let html = `<div class="dup-report-box"><strong>♻️ ${dups.length} pregunta(s) con duplicados</strong> (${totalRepetidas} copia(s) sobrantes de ${bank.length} preguntas).`;
+            if (eliminables) {
+                html += ` <button class="btn-sm btn-outline-red" style="margin-left:8px;" onclick="limpiarDuplicadosAnadidos()">🧹 Eliminar ${eliminables} duplicada(s) añadida(s)</button>`;
+            } else {
+                html += ` <span style="color:var(--muted);font-size:13px;"> (los duplicados están en <code>preguntas.js</code>; edítalo o expórtalo para limpiarlos)</span>`;
+            }
+            html += `<p style="font-size:12.5px;color:var(--muted);margin:8px 0 4px;">Pulsa 🗑️ junto a un tema para borrar esa pregunta de <strong>ese tema concreto</strong>.</p><div class="dup-groups">`;
+            dups.slice(0, 40).forEach(g => {
+                const nq = normQ(g[0].question);
+                const porTema = {};
+                g.forEach(q => { porTema[q.topic] = (porTema[q.topic] || 0) + 1; });
+                const filas = Object.entries(porTema).map(([t, c]) => `<div class="dup-occ"><span class="dup-occ-topic">${escapeHTML(t)}${c > 1 ? ` <em>(×${c})</em>` : ''}</span><button class="btn-sm btn-outline-red dup-occ-del" onclick="eliminarOcurrencia('${encodeURIComponent(t)}','${encodeURIComponent(nq)}')">🗑️ Borrar de aquí</button></div>`).join('');
+                html += `<div class="dup-group"><div class="dup-q">${escapeHTML(g[0].question)} <span class="dup-meta">(×${g.length})</span></div><div class="dup-occs">${filas}</div></div>`;
+            });
+            if (dups.length > 40) html += `<p style="color:var(--muted);font-size:13px;">… y ${dups.length - 40} grupo(s) más</p>`;
+            html += '</div></div>';
+            rep.innerHTML = html;
+        }
+
+        function eliminarOcurrencia(tEnc, nqEnc) {
+            const topic = decodeURIComponent(tEnc);
+            const nq = decodeURIComponent(nqEnc);
+            if (!confirm(`¿Borrar esta pregunta del tema:\n"${topic}"?\n\n(No afecta a las copias que estén en otros temas.)`)) return;
+            const user = getUserQuestions();
+            const idx = user.findIndex(q => q.topic === topic && normQ(q.question) === nq);
+            if (idx >= 0) {
+                user.splice(idx, 1);
+                setUserQuestions(user);
+            } else {
+                const del = getDeleted();
+                if (!del.some(d => d.topic === topic && d.nq === nq)) { del.push({ topic, nq }); setDeleted(del); }
+            }
+            populateTopics(); renderManage(); buscarDuplicadosBanco();   
+        }
+
+        function limpiarDuplicadosAnadidos() {
+            const bank = getBank();
+            const baseNorm = new Set(bank.filter(q => q._origen !== 'pdf').map(q => normQ(q.question)));
+            const vistas = new Set();
+            const userQ = getUserQuestions();
+            const limpio = [];
+            let eliminadas = 0;
+            userQ.forEach(q => {
+                const n = normQ(q.question);
+                if (baseNorm.has(n) || vistas.has(n)) { eliminadas++; return; }
+                vistas.add(n); limpio.push(q);
+            });
+            if (!eliminadas) return;
+            if (!confirm(`Se eliminarán ${eliminadas} pregunta(s) añadida(s) que están duplicadas. ¿Continuar?`)) return;
+            setUserQuestions(limpio); populateTopics(); renderManage();
+        }
+
+        function borrarTemaAñadido(tEnc) {
+            const t = decodeURIComponent(tEnc);
+            if (!confirm(`¿Eliminar todas las preguntas añadidas del tema:\n"${t}"?`)) return;
+            setUserQuestions(getUserQuestions().filter(q => q.topic !== t));
+            populateTopics(); renderManage();
+        }
+
+        function borrarTodasAñadidas() {
+            if (!confirm('¿Eliminar TODAS las preguntas que has añadido? (no afecta a las de preguntas.js)')) return;
+            localStorage.removeItem(USERQ_KEY); populateTopics(); renderManage();
+        }
+
+        function idbHandle(method, val) {
+            return new Promise((resolve, reject) => {
+                const open = indexedDB.open('tfaApp', 1);
+                open.onupgradeneeded = () => open.result.createObjectStore('handles');
+                open.onerror = () => reject(open.error);
+                open.onsuccess = () => {
+                    const db = open.result;
+                    const tx = db.transaction('handles', method === 'get' ? 'readonly' : 'readwrite');
+                    const store = tx.objectStore('handles');
+                    const req = method === 'get' ? store.get('preguntas') : store.put(val, 'preguntas');
+                    req.onsuccess = () => resolve(req.result);
+                    req.onerror = () => reject(req.error);
+                };
+            });
+        }
+
+        function pedirPermanente() {
+            const box = document.getElementById('permWarn');
+            if (!box) return;
+            const total = getBank().length;
+            box.innerHTML = `<div class="perm-warn"><strong>⚠️ Vas a sobrescribir <code>preguntas.js</code></strong><p>Se reemplazará el contenido del fichero por el banco completo actual (<strong>${total}</strong> preguntas), incluyendo las que has añadido.</p><div class="config-actions" style="margin-top:6px;"><button class="btn-success btn-sm" onclick="guardarPermanente()">✅ Sí, sobrescribir preguntas.js</button><button class="btn-grey btn-sm" onclick="document.getElementById('permWarn').innerHTML=''">Cancelar</button></div></div>`;
+        }
+
+        async function guardarPermanente() {
+            const box = document.getElementById('permWarn');
+            if (!window.showOpenFilePicker) {
+                if (box) box.innerHTML = '';
+                alert('Tu navegador no permite escribir el fichero directamente (solo Chrome o Edge).\nVoy a descargarlo: reemplaza con él el preguntas.js de la carpeta.');
+                return exportarBanco();
+            }
+            const bank = getBank().map(({ _origen, ...q }) => q);
+            const contenido = 'const questionsDB = ' + JSON.stringify(bank, null, 2) + ';\n';
+            try {
+                let handle = await idbHandle('get').catch(() => null);
+                if (handle) {
+                    const perm = await handle.requestPermission({ mode: 'readwrite' });
+                    if (perm !== 'granted') handle = null;
+                }
+                if (!handle) {
+                    [handle] = await window.showOpenFilePicker({ types: [{ description: 'JavaScript', accept: { 'text/javascript': ['.js'] } }], multiple: false });
+                    const perm = await handle.requestPermission({ mode: 'readwrite' });
+                    if (perm !== 'granted') { alert('Permiso denegado: no se ha podido escribir.'); return; }
+                    if (!/preguntas\.js$/i.test(handle.name)) { if (!confirm(`Has seleccionado "${handle.name}", no "preguntas.js". ¿Seguro?`)) return; }
+                    await idbHandle('put', handle).catch(() => {});
+                }
+                const w = await handle.createWritable();
+                await w.write(contenido); await w.close();
+                if (box) box.innerHTML = '';
+                alert(`✅ "${handle.name}" actualizado con ${bank.length} preguntas.\n\nLa próxima vez que abras o recargues la página se cargarán ya desde el fichero.`);
+            } catch (e) {
+                if (e.name === 'AbortError') return;
+                console.error(e); alert('No se pudo guardar el fichero: ' + e.message + '\n\nPuedes usar «Exportar (descargar)» como alternativa.');
+            }
+        }
+
+        async function exportarBanco() {
+            const bank = getBank().map(({ _origen, ...q }) => q); 
+            const contenido = 'const questionsDB = ' + JSON.stringify(bank, null, 2) + ';\n';
+            const nombre = 'preguntas.js';
+            if (window.showSaveFilePicker) {
+                try {
+                    const handle = await window.showSaveFilePicker({ suggestedName: nombre, types: [{ description: 'JavaScript', accept: { 'text/javascript': ['.js'] } }] });
+                    const w = await handle.createWritable(); await w.write(contenido); await w.close();
+                    alert('✅ Banco exportado como ' + nombre + '.\nSi lo has guardado sobre el original, las preguntas serán permanentes al recargar.');
+                    return;
+                } catch (e) { if (e.name === 'AbortError') return; }
+            }
+            const blob = new Blob([contenido], { type: 'text/javascript' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = nombre; a.click(); URL.revokeObjectURL(url);
+            alert('⬇️ Descargado preguntas.js con el banco completo (' + bank.length + ' preguntas).\nReemplaza el preguntas.js de la carpeta para hacerlo permanente.');
+        }
+
+        // Utils Generales
+        function normQ(s) { return String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9ñ]+/g, ' ').replace(/\s+/g, ' ').trim(); }
+        function escapeHTML(str) { return String(str??'').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;'); }
 
         window.onload = function() {
             populateTopics();
