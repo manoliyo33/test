@@ -79,6 +79,15 @@
             color: #fff;
             box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
         }
+        .tab-btn.home-btn {
+            background: #f1f5f9;
+            color: #0f172a;
+            border: 2px solid #e2e8f0;
+        }
+        .tab-btn.home-btn:hover {
+            background: #e2e8f0;
+            border-color: #94a3b8;
+        }
 
         .container {
             background: var(--card);
@@ -213,7 +222,7 @@
         .btn-review.on { opacity: 1; background: var(--amber-bg); border-color: var(--amber); }
         .question-block.marked { border-color: var(--amber); box-shadow: 0 0 0 2px var(--amber-bg); }
 
-        /* Stats & Result Hero - mantenidos igual para no romper los estilos */
+        /* Stats & Result Hero */
         .result-summary { margin: 22px 0 10px; }
         .result-hero { text-align: center; padding: 26px; border-radius: var(--radius); background: linear-gradient(135deg, var(--primary) 0%, #4f46e5 100%); color: #fff; }
         .result-hero .emoji { font-size: 46px; }
@@ -281,6 +290,7 @@
         <button class="tab-btn" id="tabSimulacrosBtn" onclick="switchTab('simulacros')">📄 Simulacros</button>
         <button class="tab-btn" id="tabStatsBtn" onclick="switchTab('stats')">📊 Estadísticas</button>
         <button class="tab-btn" id="tabAddqBtn" onclick="switchTab('addq')">➕ Añadir</button>
+        <button class="tab-btn home-btn" onclick="goHome()">🏠 Inicio</button>
     </div>
 
     <div class="container view active" id="view-examen">
@@ -475,7 +485,7 @@
         }
 
         // ===================================================
-        //  TEMAS Y BUSCADOR (Igual que antes)
+        //  TEMAS Y BUSCADOR
         // ===================================================
         function extractNumber(topicString) {
             const m = topicString.match(/Tema (?:Com[úu]n )?(\d+)/i);
@@ -740,7 +750,7 @@
             document.getElementById('submitBtn').style.display = 'none';
             
             // Botón para volver a configurar examen en esa pestaña
-            const volverConfig = `<button class="btn-grey" style="margin-top:16px;" onclick="document.getElementById('configSection').style.display='block'; this.style.display='none';">⬅️ Volver a configurar nuevo examen</button>`;
+            const volverConfig = `<button class="btn-grey" style="margin-top:16px;" onclick="goHome()">⬅️ Volver al inicio</button>`;
 
             document.getElementById('resultContainer').innerHTML = `
                 <div class="result-hero" style="margin-top: 20px;">
@@ -783,6 +793,51 @@
             arr = arr.filter(r => r.id !== id);
             localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
             renderStats();
+        }
+
+        // ===================================================
+        //  🏠 VOLVER AL INICIO (sin recargar página)
+        // ===================================================
+        function goHome() {
+            // 1. Detener el temporizador si está activo
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            
+            // 2. Restablecer variables de estado
+            currentQuestions = [];
+            markedForReview = new Set();
+            examEtiqueta = '';
+            
+            // 3. Mostrar la sección de configuración
+            document.getElementById('configSection').style.display = 'block';
+            
+            // 4. Ocultar la barra de progreso
+            document.getElementById('examProgress').classList.remove('show');
+            
+            // 5. Limpiar el contenedor de preguntas
+            document.getElementById('quizContainer').innerHTML = `
+                <p class="empty-msg">
+                    <span class="big-emoji">🎯</span>
+                    Selecciona los temas y pulsa «Empezar Examen».
+                </p>
+            `;
+            
+            // 6. Limpiar resultados
+            document.getElementById('resultContainer').innerHTML = '';
+            
+            // 7. Ocultar botón de corrección
+            document.getElementById('submitBtn').style.display = 'none';
+            
+            // 8. Restablecer el temporizador visual
+            document.getElementById('examTimer').textContent = '⏱️ 00:00';
+            
+            // 9. Asegurar que estamos en la pestaña de examen
+            switchTab('examen');
+            
+            // 10. Scroll suave al inicio de la configuración
+            document.getElementById('configSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
         }
 
         // Utils
