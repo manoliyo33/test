@@ -313,6 +313,7 @@
     <script src="Examen1_TFA_SI.js"></script>
     <script src="Examen2_TFA_SI.js"></script>
     <script src="Examen1_TMFA_SI.js"></script>
+	<script src="Examen1_TFA_2019.js"></script>
 
     <script src="pdf.min.js"></script>
     <script src="pdf.worker.min.js"></script>
@@ -501,7 +502,8 @@
             const simulacros = [
                 { id: 'tfa1', title: 'Examen 1 - Técnico/a Función Admin. (Acceso Libre)', varName: 'examen1_TFA', data: typeof examen1_TFA !== 'undefined' ? examen1_TFA : null },
                 { id: 'tfa2', title: 'Examen 2 - Técnico/a Función Admin. (Promoción Interna)', varName: 'examen2_TFA', data: typeof examen2_TFA !== 'undefined' ? examen2_TFA : null },
-                { id: 'tmfa1', title: 'Examen 1 - Técnico/a Medio Función Admin. (Acceso Libre)', varName: 'examen1_TMFA', data: typeof examen1_TMFA !== 'undefined' ? examen1_TMFA : null }
+                { id: 'tmfa1', title: 'Examen 1 - Técnico/a Medio Función Admin. (Acceso Libre)', varName: 'examen1_TMFA', data: typeof examen1_TMFA !== 'undefined' ? examen1_TMFA : null },
+				{ id: 'tfa2019', title: 'Examen 1 - Técnico/a Función Admin. (Acceso Libre 2019)', varName: 'examen1_TFA_2019', data: typeof examen1_TFA_2019 !== 'undefined' ? examen1_TFA_2019 : null }
             ];
 
             let html = '';
@@ -533,7 +535,7 @@
             if (varName === 'examen1_TFA') data = typeof examen1_TFA !== 'undefined' ? examen1_TFA : null;
             if (varName === 'examen2_TFA') data = typeof examen2_TFA !== 'undefined' ? examen2_TFA : null;
             if (varName === 'examen1_TMFA') data = typeof examen1_TMFA !== 'undefined' ? examen1_TMFA : null;
-
+		    if (varName === 'examen1_TFA_2019') data = typeof examen1_TFA_2019 !== 'undefined' ? examen1_TFA_2019 : null;
             if (!data || data.length === 0) {
                 alert("No se ha podido iniciar el examen. Asegúrate de que el archivo existe y está bien configurado.");
                 return;
