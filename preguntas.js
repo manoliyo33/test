@@ -21004,7 +21004,7 @@ const questionsDB = [
     "question": "¿Qué es una clave primaria en el modelo relacional?",
     "options": [
       "Un atributo que puede contener valores nulos.",
-      "Un conjunto de atributos que identifica de forma única cada fila en una tabla. (Correcta)",
+      "Un conjunto de atributos que identifica de forma única cada fila en una tabla.",
       "Un atributo que solo puede ser numérico.",
       "Una restricción que permite duplicados."
     ],
@@ -21016,7 +21016,7 @@ const questionsDB = [
     "question": "En el modelo relacional, una relación es:",
     "options": [
       "Una conexión entre dos tablas mediante claves foráneas.",
-      "Una tabla con filas y columnas. (Correcta)",
+      "Una tabla con filas y columnas. ",
       "Un diagrama de flujo de datos.",
       "Una regla de normalización."
     ],
@@ -21030,7 +21030,7 @@ const questionsDB = [
       "Primera forma normal (1FN).",
       "Segunda forma normal (2FN).",
       "Tercera forma normal (3FN).",
-      "Forma relacional completa (FRC). (Correcta)"
+      "Forma relacional completa (FRC)."
     ],
     "correctAnswer": 3,
     "feedback": "Las formas normales son 1FN, 2FN, 3FN, FNBC, 4FN y 5FN. \"Forma relacional completa\" no existe."
@@ -21039,7 +21039,7 @@ const questionsDB = [
     "topic": "Tema 73",
     "question": "En álgebra relacional, la operación que combina dos relaciones eliminando duplicados es:",
     "options": [
-      "Unión. (Correcta)",
+      "Unión. ",
       "Diferencia.",
       "Producto cartesiano.",
       "Selección."
@@ -21053,7 +21053,7 @@ const questionsDB = [
     "options": [
       "GROUP BY.",
       "ORDER BY.",
-      "WHERE. (Correcta)",
+      "WHERE.",
       "HAVING."
     ],
     "correctAnswer": 2,
@@ -21066,7 +21066,7 @@ const questionsDB = [
       "INNER JOIN.",
       "LEFT JOIN.",
       "RIGHT JOIN.",
-      "FULL OUTER JOIN. (Correcta)"
+      "FULL OUTER JOIN. "
     ],
     "correctAnswer": 3,
     "feedback": "El FULL OUTER JOIN devuelve todas las filas de ambas tablas, rellenando con NULL donde no hay coincidencias."
@@ -21077,7 +21077,7 @@ const questionsDB = [
     "options": [
       "Oracle Database.",
       "Microsoft SQL Server.",
-      "PostgreSQL. (Correcta)",
+      "PostgreSQL. ",
       "IBM DB2."
     ],
     "correctAnswer": 2,
@@ -21088,7 +21088,7 @@ const questionsDB = [
     "question": "En el modelo E-R, una entidad débil es aquella que:",
     "options": [
       "No tiene atributos.",
-      "Depende de otra entidad para existir. (Correcta)",
+      "Depende de otra entidad para existir.",
       "Siempre tiene una clave primaria simple.",
       "No puede relacionarse con otras entidades."
     ],
@@ -21101,7 +21101,7 @@ const questionsDB = [
     "options": [
       "1FN.",
       "2FN.",
-      "3FN. (Correcta)",
+      "3FN.",
       "FNBC."
     ],
     "correctAnswer": 2,
@@ -21112,7 +21112,7 @@ const questionsDB = [
     "question": "¿Qué operación en álgebra relacional selecciona filas basadas en una condición?",
     "options": [
       "Proyección.",
-      "Selección. (Correcta)",
+      "Selección. ",
       "Reunión.",
       "División."
     ],
@@ -21123,7 +21123,7 @@ const questionsDB = [
     "topic": "Tema 73",
     "question": "¿Qué estándar define SQL?",
     "options": [
-      "ISO/IEC 9075. (Correcta)",
+      "ISO/IEC 9075.",
       "IEEE 802.11.",
       "RFC 793.",
       "ANSI X3.135."
@@ -21136,7 +21136,7 @@ const questionsDB = [
     "question": "¿Qué comando SQL se usa para eliminar una tabla?",
     "options": [
       "DELETE TABLE.",
-      "DROP TABLE. (Correcta)",
+      "DROP TABLE.",
       "REMOVE TABLE.",
       "TRUNCATE TABLE."
     ],
@@ -21148,7 +21148,7 @@ const questionsDB = [
     "question": "¿Qué tipo de integridad asegura que una clave foránea siempre apunte a una clave primaria válida?",
     "options": [
       "Integridad de dominio.",
-      "Integridad referencial. (Correcta)",
+      "Integridad referencial.",
       "Integridad de entidad.",
       "Integridad de usuario."
     ],
@@ -21160,7 +21160,7 @@ const questionsDB = [
     "question": "En SQL, ¿qué función agrega valores numéricos?",
     "options": [
       "COUNT().",
-      "SUM(). (Correcta)",
+      "SUM(). ",
       "AVG().",
       "MAX()."
     ],
@@ -21171,7 +21171,7 @@ const questionsDB = [
     "topic": "Tema 73",
     "question": "¿Qué propiedad ACID garantiza que una transacción se ejecute completamente o no se ejecute?",
     "options": [
-      "Atomicidad. (Correcta)",
+      "Atomicidad.",
       "Consistencia.",
       "Aislamiento.",
       "Durabilidad."
@@ -21183,7 +21183,7 @@ const questionsDB = [
     "topic": "Tema 73",
     "question": "¿Qué tipo de JOIN devuelve solo las filas coincidentes en ambas tablas?",
     "options": [
-      "INNER JOIN. (Correcta)",
+      "INNER JOIN.",
       "LEFT JOIN.",
       "RIGHT JOIN.",
       "CROSS JOIN."
@@ -21196,7 +21196,7 @@ const questionsDB = [
     "question": "¿Qué comando SQL modifica la estructura de una tabla?",
     "options": [
       "UPDATE.",
-      "ALTER TABLE. (Correcta)",
+      "ALTER TABLE.",
       "MODIFY TABLE.",
       "CHANGE TABLE."
     ],
@@ -21208,7 +21208,7 @@ const questionsDB = [
     "question": "¿Qué forma normal exige que todos los atributos no clave dependan completamente de la clave primaria?",
     "options": [
       "1FN.",
-      "2FN. (Correcta)",
+      "2FN.",
       "3FN.",
       "FNBC."
     ],
@@ -21220,7 +21220,7 @@ const questionsDB = [
     "question": "¿Qué operación en álgebra relacional combina tablas basándose en una condición?",
     "options": [
       "Unión.",
-      "Reunión (JOIN). (Correcta)",
+      "Reunión (JOIN).",
       "Diferencia.",
       "División."
     ],
@@ -21233,7 +21233,7 @@ const questionsDB = [
     "options": [
       "MySQL.",
       "PostgreSQL.",
-      "SQL Server. (Correcta)",
+      "SQL Server.",
       "MongoDB."
     ],
     "correctAnswer": 2,
@@ -21244,7 +21244,7 @@ const questionsDB = [
     "question": "¿Qué operación en álgebra relacional elimina columnas de una tabla?",
     "options": [
       "Selección (σ).",
-      "Proyección (π). (Correcta)",
+      "Proyección (π).",
       "Reunión ( ⋈ ).",
       "Divisi ó n ( ÷ )."
     ],
@@ -21257,17 +21257,17 @@ const questionsDB = [
     "options": [
       "WHERE.",
       "ORDER BY.",
-      "GROUP BY. (Correcta)",
+      "GROUP BY.",
       "DISTINCT."
     ],
     "correctAnswer": 2,
     "feedback": "GROUP BY agrupa registros para aplicar funciones de agregación (como SUM() o COUNT())."
   },
   {
-    "topic": "(Correcta)",
+    "topic": "Tema 73",
     "question": "¿Qué comando SQL crea una nueva tabla?",
     "options": [
-      "CREATE TABLE. (Correcta)",
+      "CREATE TABLE.",
       "ADD TABLE.",
       "DEFINE TABLE.",
       "NEW TABLE."
@@ -21276,11 +21276,11 @@ const questionsDB = [
     "feedback": "CREATE TABLE define la estructura de una nueva tabla, incluyendo columnas y restricciones."
   },
   {
-    "topic": "(Correcta)",
+    "topic": "Tema 73",
     "question": "En el modelo E-R, ¿qué símbolo representa una relación muchos-a- muchos?",
     "options": [
       "Línea simple.",
-      "Línea con doble rombo. (Correcta)",
+      "Línea con doble rombo.",
       "Línea con triángulo.",
       "Línea discontinua."
     ],
@@ -21288,11 +21288,11 @@ const questionsDB = [
     "feedback": "En los diagramas E-R, un rombo doble indica una relación muchos-a-muchos."
   },
   {
-    "topic": "(Correcta)",
+    "topic": "Tema 73",
     "question": "¿Qué propiedad ACID garantiza que los cambios de una transacción persistirán tras un fallo?",
     "options": [
       "Atomicidad.",
-      "Durabilidad. (Correcta)",
+      "Durabilidad.",
       "Consistencia.",
       "Aislamiento."
     ],
@@ -21300,10 +21300,10 @@ const questionsDB = [
     "feedback": "La durabilidad asegura que los cambios confirmados no se pierdan, incluso ante fallos del sistema."
   },
   {
-    "topic": "(Correcta)",
+    "topic": "Tema 73",
     "question": "¿Qué operador SQL combina resultados de dos consultas eliminando duplicados?",
     "options": [
-      "UNION. (Correcta)",
+      "UNION.",
       "UNION ALL.",
       "INTERSECT.",
       "MINUS."
@@ -21312,10 +21312,10 @@ const questionsDB = [
     "feedback": "UNION fusiona consultas y elimina duplicados, mientras que UNION ALL los mantiene."
   },
   {
-    "topic": "(Correcta)",
+    "topic": "Tema 73",
     "question": "¿Qué tipo de dato SQL almacena hasta 255 caracteres?",
     "options": [
-      "VARCHAR. (Correcta)",
+      "VARCHAR.",
       "TEXT.",
       "BLOB.",
       "CHAR."
@@ -21324,11 +21324,11 @@ const questionsDB = [
     "feedback": "VARCHAR(n) almacena cadenas de longitud variable (hasta *n* caracteres), mientras que CHAR tiene longitud fija."
   },
   {
-    "topic": "(Correcta)",
+    "topic": "Tema 73",
     "question": "¿Qué restricción SQL garantiza que un atributo tenga valores únicos?",
     "options": [
       "PRIMARY KEY.",
-      "UNIQUE. (Correcta)",
+      "UNIQUE.",
       "FOREIGN KEY.",
       "CHECK."
     ],
@@ -21336,11 +21336,11 @@ const questionsDB = [
     "feedback": "UNIQUE permite valores nulos (a diferencia de la clave primaria) pero evita duplicados."
   },
   {
-    "topic": "(Correcta)",
+    "topic": "Tema 73",
     "question": "¿Qué función SQL devuelve el valor promedio de una columna numérica?",
     "options": [
       "TOTAL().",
-      "AVG(). (Correcta)",
+      "AVG().",
       "MEAN().",
       "SUM()."
     ],
@@ -21348,35 +21348,35 @@ const questionsDB = [
     "feedback": "AVG() calcula la media aritmética, mientras que SUM() devuelve la suma total."
   },
   {
-    "topic": "(Correcta)",
+    "topic": "Tema 73",
     "question": "¿Qué estándar introdujo SQL recursivo y triggers?",
     "options": [
       "SQL-86.",
       "SQL-92.",
-      "SQL:1999. (Correcta)",
+      "SQL:1999.",
       "SQL:2003."
     ],
     "correctAnswer": 2,
     "feedback": "SQL:1999 añadió características avanzadas como consultas recursivas y triggers."
   },
   {
-    "topic": "(Correcta)",
+    "topic": "Tema 73",
     "question": "¿Qué comando SQL elimina todos los registros de una tabla sin borrar su estructura?",
     "options": [
       "DELETE FROM.",
       "DROP TABLE.",
-      "TRUNCATE TABLE. (Correcta)",
+      "TRUNCATE TABLE.",
       "REMOVE TABLE."
     ],
     "correctAnswer": 2,
     "feedback": "TRUNCATE TABLE es más rápido que DELETE y reinicia los contadores de identidad."
   },
   {
-    "topic": "(Correcta)",
+    "topic": "Tema 73",
     "question": "En álgebra relacional, ¿qué operación devuelve las tuplas que están en la primera relación pero no en la segunda?",
     "options": [
       "Intersección.",
-      "Diferencia. (Correcta)",
+      "Diferencia.",
       "División.",
       "Producto cartesiano."
     ],
@@ -21384,11 +21384,11 @@ const questionsDB = [
     "feedback": "La diferencia (R S) − retorna las filas de R que no están en S."
   },
   {
-    "topic": "(Correcta)",
+    "topic": "Tema 73",
     "question": "¿Qué tipo de JOIN devuelve el producto cartesiano de dos tablas?",
     "options": [
       "INNER JOIN.",
-      "CROSS JOIN. (Correcta)",
+      "CROSS JOIN.",
       "NATURAL JOIN.",
       "SELF JOIN."
     ],
@@ -21396,23 +21396,23 @@ const questionsDB = [
     "feedback": "CROSS JOIN combina cada fila de la primera tabla con todas las filas de la segunda."
   },
   {
-    "topic": "(Correcta)",
+    "topic": "Tema 73",
     "question": "¿Qué SGBD utiliza el lenguaje PL/SQL?",
     "options": [
       "MySQL.",
       "PostgreSQL.",
-      "Oracle Database. (Correcta)",
+      "Oracle Database.",
       "SQLite."
     ],
     "correctAnswer": 2,
     "feedback": "Oracle usa PL/SQL para programación procedural, mientras que PostgreSQL usa PL/pgSQL."
   },
   {
-    "topic": "(Correcta)",
+    "topic": "Tema 73",
     "question": "¿Qué cláusula SQL filtra grupos después de aplicar GROUP BY ?",
     "options": [
       "WHERE.",
-      "HAVING. (Correcta)",
+      "HAVING.",
       "FILTER.",
       "CHECK."
     ],
@@ -21420,34 +21420,34 @@ const questionsDB = [
     "feedback": "HAVING filtra grupos, mientras que WHERE filtra filas individuales antes de agrupar."
   },
   {
-    "topic": "(Correcta)",
+    "topic": "Tema 73",
     "question": "¿Qué forma normal exige que no haya dependencias multivaluadas no triviales?",
     "options": [
       "3FN.",
       "FNBC.",
-      "4FN. (Correcta)",
+      "4FN.",
       "5FN."
     ],
     "correctAnswer": 2,
     "feedback": "La 4FN resuelve dependencias multivaluadas (atributos con múltiples valores independientes)."
   },
   {
-    "topic": "(Correcta)",
+    "topic": "Tema 73",
     "question": "¿Qué comando SQL actualiza datos en una tabla?",
     "options": [
       "MODIFY.",
       "CHANGE.",
-      "UPDATE. (Correcta)",
+      "UPDATE.",
       "ALTER."
     ],
     "correctAnswer": 2,
     "feedback": "UPDATE modifica registros existentes, mientras que ALTER cambia la estructura de la tabla."
   },
   {
-    "topic": "(Correcta)",
+    "topic": "Tema 73",
     "question": "¿Qué tipo de índice SQL mejora la velocidad de búsqueda pero ralentiza inserciones?",
     "options": [
-      "Índice clustered. (Correcta)",
+      "Índice clustered.",
       "Índice no clustered.",
       "Índice único.",
       "Índice parcial."
@@ -21456,11 +21456,11 @@ const questionsDB = [
     "feedback": "Los índices clustered reordenan físicamente los datos, lo que acelera consultas pero penaliza inserciones."
   },
   {
-    "topic": "(Correcta)",
+    "topic": "Tema 73",
     "question": "¿Qué componente de un SGBD gestiona la concurrencia de transacciones?",
     "options": [
       "Optimizador de consultas.",
-      "Manejador de transacciones. (Correcta)",
+      "Manejador de transacciones.",
       "Manejador de almacenamiento.",
       "Compilador SQL."
     ],
