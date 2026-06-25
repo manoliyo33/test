@@ -1,0 +1,1935 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador Examen TFA Sistemas de Información</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #dbeafe;
+            --bg: #eef2f7;
+            --card: #ffffff;
+            --text: #1f2937;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+            --green: #16a34a;
+            --green-bg: #dcfce7;
+            --red: #dc2626;
+            --red-bg: #fee2e2;
+            --amber: #d97706;
+            --amber-bg: #fef3c7;
+            --radius: 14px;
+            --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(180deg, #e0e7ff 0%, var(--bg) 240px);
+            color: var(--text);
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 24px 18px 60px;
+            line-height: 1.5;
+        }
+
+        header.app-header {
+            text-align: center;
+            margin-bottom: 22px;
+        }
+        header.app-header h1 {
+            margin: 0;
+            font-size: 30px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #0f172a;
+        }
+        header.app-header .subtitle {
+            color: var(--muted);
+            font-size: 15px;
+            margin-top: 6px;
+        }
+
+        /* ---- Tabs ---- */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .tab-btn {
+            border: none;
+            background: rgba(255,255,255,0.7);
+            color: var(--muted);
+            padding: 10px 22px;
+            border-radius: 999px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.18s;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .tab-btn:hover { background: #fff; color: var(--text); }
+        .tab-btn.active {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
+        }
+
+        .container {
+            background: var(--card);
+            padding: 26px 30px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+        }
+
+        .view { display: none; }
+        .view.active { display: block; }
+
+        /* ---- Config ---- */
+        .config-section {
+            background: #f8fafc;
+            padding: 22px;
+            border-radius: var(--radius);
+            margin-bottom: 22px;
+            border: 1px solid var(--border);
+        }
+        .config-section h3 {
+            margin: 0 0 16px;
+            color: #0f172a;
+            font-size: 17px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .config-row { display: flex; flex-wrap: wrap; gap: 22px; align-items: flex-start; }
+        .config-col { flex: 1; min-width: 220px; }
+        .config-col > label {
+            display: block;
+            font-weight: 700;
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+            gap: 4px 14px;
+            max-height: 270px;
+            overflow-y: auto;
+            padding: 12px;
+            background: #fff;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+        .topic-grid label {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-size: 13px;
+            padding: 6px 8px;
+            border-radius: 7px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .topic-grid label:hover { background: var(--primary-light); }
+        .topic-grid input[type="checkbox"] {
+            width: 17px; height: 17px; cursor: pointer; flex-shrink: 0;
+            accent-color: var(--primary);
+        }
+
+        .config-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; align-items: center; }
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+            border-radius: 9px;
+            font-weight: 600;
+            transition: all 0.18s;
+        }
+        .btn-sm { padding: 8px 16px; font-size: 13px; }
+        .btn-grey { background: #e2e8f0; color: #334155; }
+        .btn-grey:hover { background: #cbd5e1; }
+        .btn-outline-red { background: #fff; color: var(--red); border: 1px solid #fca5a5; }
+        .btn-outline-red:hover { background: var(--red-bg); }
+
+        .btn-primary {
+            background: var(--primary);
+            color: #fff;
+            padding: 14px 34px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 11px;
+            box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+        }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+        .btn-success {
+            background: var(--green);
+            color: #fff;
+            padding: 14px 34px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 11px;
+            box-shadow: 0 6px 16px rgba(22, 163, 74, 0.3);
+        }
+        .btn-success:hover { background: #15803d; transform: translateY(-1px); }
+
+        .btn-save {
+            background: #fff;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+            padding: 12px 26px;
+            font-size: 15px;
+            font-weight: 700;
+            border-radius: 11px;
+        }
+        .btn-save:hover { background: var(--primary-light); }
+
+        select {
+            padding: 11px 15px;
+            border-radius: 9px;
+            border: 1px solid #cbd5e1;
+            font-size: 15px;
+            background: #fff;
+            min-width: 130px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        .counter { font-size: 14px; color: var(--muted); font-weight: 600; }
+        .counter strong { color: var(--primary); font-size: 16px; }
+
+        /* ---- Progress bar during exam ---- */
+        .exam-progress {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: var(--card);
+            padding: 12px 4px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+            display: none;
+        }
+        .exam-progress.show { display: block; }
+        .progress-track { height: 8px; background: var(--border); border-radius: 99px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s; border-radius: 99px; }
+        .progress-label { font-size: 13px; color: var(--muted); margin-top: 6px; font-weight: 600; }
+
+        /* ---- Questions ---- */
+        .question-block {
+            margin-bottom: 8px;
+            padding: 18px 18px 16px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-top: 16px;
+            background: #fff;
+            transition: border-color 0.2s;
+        }
+        .question-block .q-head { display: flex; gap: 10px; align-items: baseline; }
+        .question-block .q-num {
+            background: var(--primary);
+            color: #fff;
+            font-weight: 700;
+            font-size: 13px;
+            border-radius: 8px;
+            padding: 3px 9px;
+            flex-shrink: 0;
+        }
+        .question-block .q-text { font-weight: 600; font-size: 15.5px; margin: 0; }
+        .q-topic {
+            font-size: 0.75em;
+            color: var(--muted);
+            background: #f1f5f9;
+            padding: 3px 11px;
+            border-radius: 99px;
+            display: inline-block;
+            margin: 8px 0 12px 0;
+        }
+
+        .options label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+            padding: 10px 14px;
+            border-radius: 9px;
+            transition: all 0.15s;
+            border: 1.5px solid var(--border);
+        }
+        .options label:hover { background: var(--primary-light); border-color: #93c5fd; }
+        .options input[type="radio"] { margin-right: 11px; transform: scale(1.15); cursor: pointer; accent-color: var(--primary); }
+
+        /* corrected states */
+        .options label.opt-correct {
+            background: var(--green-bg);
+            border-color: var(--green);
+            color: #14532d;
+            font-weight: 600;
+        }
+        .options label.opt-wrong {
+            background: var(--red-bg);
+            border-color: var(--red);
+            color: #7f1d1d;
+            font-weight: 600;
+        }
+        .opt-tag { float: right; font-weight: 700; font-size: 13px; }
+        .opt-correct .opt-tag { color: var(--green); }
+        .opt-wrong .opt-tag { color: var(--red); }
+
+        .feedback {
+            margin-top: 12px;
+            padding: 13px 16px;
+            border-radius: 10px;
+            display: none;
+            font-size: 14px;
+            line-height: 1.55;
+        }
+        .feedback.show { display: block; }
+        .feedback.correct { background: var(--green-bg); border-left: 5px solid var(--green); color: #14532d; }
+        .feedback.incorrect { background: var(--red-bg); border-left: 5px solid var(--red); color: #7f1d1d; }
+        .feedback .answer-line { font-weight: 700; margin-bottom: 6px; }
+
+        /* ---- Result summary ---- */
+        .result-summary { margin: 22px 0 10px; }
+        .result-hero {
+            text-align: center;
+            padding: 26px;
+            border-radius: var(--radius);
+            background: linear-gradient(135deg, var(--primary) 0%, #4f46e5 100%);
+            color: #fff;
+        }
+        .result-hero .emoji { font-size: 46px; }
+        .result-hero .big-score { font-size: 42px; font-weight: 800; margin: 6px 0; }
+        .result-hero .pct { font-size: 17px; opacity: 0.95; }
+        .result-hero .ratio { font-size: 15px; opacity: 0.9; margin-top: 4px; }
+
+        .mini-stats { display: flex; gap: 12px; margin-top: 16px; flex-wrap: wrap; }
+        .mini-card {
+            flex: 1; min-width: 120px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+            text-align: center;
+        }
+        .mini-card .num { font-size: 26px; font-weight: 800; }
+        .mini-card .lbl { font-size: 12.5px; color: var(--muted); margin-top: 2px; }
+        .num.ok { color: var(--green); }
+        .num.bad { color: var(--red); }
+
+        .topic-breakdown { margin-top: 18px; }
+        .topic-breakdown h4 { margin: 0 0 10px; font-size: 15px; color: #0f172a; }
+
+        .save-row {
+            display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+            margin-top: 18px;
+        }
+        .save-hint { text-align: center; font-size: 12.5px; color: var(--muted); margin-top: 10px; }
+        .toast {
+            text-align: center; margin-top: 12px; font-weight: 600; font-size: 14px;
+            min-height: 20px;
+        }
+        .toast.ok { color: var(--green); }
+        .toast.err { color: var(--red); }
+
+        /* ---- Bars (stats + breakdown) ---- */
+        .bar-item { margin-bottom: 13px; }
+        .bar-head { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; gap: 10px; }
+        .bar-head .bar-name { font-weight: 600; color: #334155; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .bar-head .bar-val { font-weight: 700; flex-shrink: 0; }
+        .bar-track { height: 18px; background: var(--border); border-radius: 99px; overflow: hidden; }
+        .bar-fill { height: 100%; border-radius: 99px; transition: width 0.5s; min-width: 2px; }
+        .bar-fill.good { background: var(--green); }
+        .bar-fill.mid { background: var(--amber); }
+        .bar-fill.poor { background: var(--red); }
+        .val-good { color: var(--green); }
+        .val-mid { color: var(--amber); }
+        .val-poor { color: var(--red); }
+
+        /* ---- Stats view ---- */
+        .stats-cards { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 24px; }
+        .stat-card {
+            flex: 1; min-width: 150px;
+            background: linear-gradient(135deg, #f8fafc, #eef2f7);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px;
+            text-align: center;
+        }
+        .stat-card .v { font-size: 30px; font-weight: 800; color: var(--primary); }
+        .stat-card .l { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+        .section-title {
+            font-size: 17px; font-weight: 700; color: #0f172a;
+            margin: 26px 0 14px; display: flex; align-items: center; gap: 8px;
+        }
+        .review-banner {
+            background: var(--amber-bg);
+            border: 1px solid #fcd34d;
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #78350f;
+        }
+        .review-banner strong { color: #92400e; }
+        .review-banner ul { margin: 8px 0 0; padding-left: 20px; }
+        .review-banner li { margin-bottom: 3px; }
+
+        .exam-list { margin-top: 8px; }
+        .exam-row {
+            display: flex; align-items: center; gap: 14px;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 11px;
+            margin-bottom: 9px;
+            background: #fff;
+        }
+        .exam-row .ex-date { font-weight: 600; font-size: 14px; flex: 1; min-width: 140px; }
+        .exam-row .ex-meta { font-size: 13px; color: var(--muted); }
+        .exam-row .ex-score {
+            font-weight: 800; font-size: 15px; padding: 4px 12px; border-radius: 99px;
+        }
+        .ex-score.good { background: var(--green-bg); color: var(--green); }
+        .ex-score.mid { background: var(--amber-bg); color: var(--amber); }
+        .ex-score.poor { background: var(--red-bg); color: var(--red); }
+        .ex-del {
+            background: transparent; color: var(--muted); font-size: 18px;
+            padding: 4px 8px; border-radius: 8px; line-height: 1;
+        }
+        .ex-del:hover { background: var(--red-bg); color: var(--red); }
+
+        .empty-msg, .loading-msg {
+            text-align: center; padding: 40px 20px; color: var(--muted); font-size: 16px;
+        }
+        .empty-msg .big-emoji { font-size: 40px; display: block; margin-bottom: 10px; }
+
+        .stats-toolbar { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; margin-bottom: 14px; }
+
+        /* ---- Añadir preguntas / revisión ---- */
+        #pdfInput {
+            padding: 8px; border: 1px solid #cbd5e1; border-radius: 9px; background: #fff;
+            font-family: inherit; max-width: 100%;
+        }
+        .review-card {
+            border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px;
+            margin-bottom: 14px; background: #fff;
+        }
+        .review-card.err { border-color: #fca5a5; background: var(--red-bg); }
+        .review-top { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 10px; }
+        .review-inc { display: flex; align-items: center; gap: 7px; font-weight: 600; font-size: 14px; cursor: pointer; }
+        .review-inc input { width: 17px; height: 17px; accent-color: var(--primary); cursor: pointer; }
+        .review-count {
+            background: var(--primary-light); color: var(--primary-dark); font-weight: 700;
+            font-size: 13px; padding: 3px 12px; border-radius: 99px;
+        }
+        .review-file { font-size: 13px; color: var(--muted); margin-left: auto; max-width: 50%;
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .review-namelbl { display: block; font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 5px; }
+        .review-namelbl em { color: var(--amber); font-weight: 500; }
+        .review-name {
+            width: 100%; padding: 11px 14px; border: 1.5px solid var(--primary); border-radius: 9px;
+            font-size: 15px; font-family: inherit; font-weight: 600; color: #0f172a;
+        }
+        .review-warn { font-size: 13px; color: var(--amber); margin-top: 7px; }
+        .review-details { margin-top: 12px; }
+        .review-details summary { cursor: pointer; font-size: 13px; color: var(--primary); font-weight: 600; }
+        .review-q { border-top: 1px solid var(--border); padding: 10px 0; font-size: 14px; }
+        .review-q ul { margin: 6px 0; padding-left: 22px; }
+        .review-q li.q-ok { color: var(--green); font-weight: 700; }
+        .review-fb { font-size: 13px; color: var(--muted); font-style: italic; margin-top: 4px; }
+        /* duplicados */
+        .dup-summary {
+            background: #f8fafc; border: 1px solid var(--border); border-radius: 11px;
+            padding: 12px 16px; margin-bottom: 16px; font-size: 14.5px;
+        }
+        .dup-toggle { display: flex; align-items: center; gap: 8px; margin-top: 10px; font-size: 14px; font-weight: 600; cursor: pointer; }
+        .dup-toggle input { width: 17px; height: 17px; accent-color: var(--primary); cursor: pointer; }
+        .review-count.dup { background: var(--amber-bg); color: var(--amber); }
+        .review-q.is-dup { opacity: 0.7; }
+        .dup-badge { font-size: 12px; font-weight: 700; color: var(--amber); background: var(--amber-bg);
+            padding: 1px 8px; border-radius: 99px; margin-left: 8px; }
+        .dup-report-box { margin-top: 12px; background: #fff; border: 1px solid var(--border);
+            border-radius: 11px; padding: 14px 16px; font-size: 14px; }
+        .dup-groups { margin-top: 10px; max-height: 300px; overflow-y: auto; }
+        .dup-group { border-top: 1px solid var(--border); padding: 8px 0; }
+        .dup-q { font-weight: 600; font-size: 13.5px; }
+        .dup-meta { font-size: 12px; color: var(--muted); font-weight: 500; }
+        .dup-occs { margin-top: 6px; display: flex; flex-direction: column; gap: 5px; }
+        .dup-occ { display: flex; align-items: center; justify-content: space-between; gap: 10px;
+            background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 5px 10px; }
+        .dup-occ-topic { font-size: 13px; color: #334155; }
+        .dup-occ-topic em { color: var(--amber); font-style: normal; font-weight: 700; }
+        .dup-occ-del { flex-shrink: 0; white-space: nowrap; }
+
+        /* ---- Cronómetro / progreso / marcadas ---- */
+        .progress-top { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; flex-wrap: wrap; }
+        .progress-top .progress-label { margin: 0; }
+        .progress-marked { font-size: 13px; font-weight: 700; color: var(--amber); }
+        .progress-timer { margin-left: auto; font-size: 15px; font-weight: 800; color: var(--primary);
+            background: var(--primary-light); padding: 3px 12px; border-radius: 99px; font-variant-numeric: tabular-nums; }
+
+        .btn-review {
+            margin-left: auto; background: transparent; border: 1.5px solid var(--border);
+            border-radius: 8px; padding: 3px 9px; font-size: 15px; cursor: pointer; opacity: 0.5;
+            transition: all 0.15s; flex-shrink: 0;
+        }
+        .btn-review:hover { opacity: 1; border-color: var(--amber); }
+        .btn-review.on { opacity: 1; background: var(--amber-bg); border-color: var(--amber); }
+        .question-block.marked { border-color: var(--amber); box-shadow: 0 0 0 2px var(--amber-bg); }
+
+        .exam-tag {
+            display: inline-block; background: var(--primary-light); color: var(--primary-dark);
+            font-weight: 700; font-size: 14px; padding: 7px 16px; border-radius: 99px; margin-bottom: 6px;
+        }
+        .hero-tag { font-size: 13px; font-weight: 700; opacity: 0.92; margin-bottom: 6px; }
+
+        /* ---- Gráfico de evolución ---- */
+        .chart-box { background: #fff; border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 10px 6px; }
+        .chart-legend { text-align: center; font-size: 12.5px; color: var(--muted); margin-top: 4px; }
+        .ex-tag { font-size: 11px; font-weight: 700; color: var(--primary-dark); background: var(--primary-light);
+            padding: 1px 8px; border-radius: 99px; margin-left: 4px; white-space: nowrap; }
+        .perm-warn { background: var(--amber-bg); border: 1px solid #fcd34d; border-radius: 11px;
+            padding: 14px 16px; margin-top: 12px; font-size: 14px; color: #78350f; }
+        .perm-warn p { margin: 8px 0; }
+        .perm-warn code { background: rgba(0,0,0,0.06); padding: 1px 5px; border-radius: 4px; }
+
+        @media (max-width: 640px) {
+            .container { padding: 18px 16px; }
+            .topic-grid { grid-template-columns: 1fr 1fr; max-height: 220px; }
+            .config-row { flex-direction: column; }
+            header.app-header h1 { font-size: 23px; }
+            .result-hero .big-score { font-size: 34px; }
+        }
+    </style>
+
+    <script src="preguntas.js"></script>
+    <!-- pdf.js local (para leer PDFs sin conexión, funciona con file://) -->
+    <script src="pdf.min.js"></script>
+    <script src="pdf.worker.min.js"></script>
+</head>
+<body>
+
+    <header class="app-header">
+        <h1>📚 Simulador Examen TFA Sistemas de Información</h1>
+        <p class="subtitle">Practica por temas, corrige al detalle y revisa tus estadísticas</p>
+    </header>
+
+    <div class="tabs">
+        <button class="tab-btn active" id="tabExamenBtn" onclick="switchTab('examen')">📝 Examen</button>
+        <button class="tab-btn" id="tabStatsBtn" onclick="switchTab('stats')">📊 Estadísticas</button>
+        <button class="tab-btn" id="tabAddqBtn" onclick="switchTab('addq')">➕ Añadir Preguntas</button>
+    </div>
+
+    <!-- ============ VISTA EXAMEN ============ -->
+    <div class="container view active" id="view-examen">
+        <div class="config-section" id="configSection">
+            <h3>⚙️ Configuración del examen</h3>
+
+            <div class="config-row">
+                <div class="config-col" style="min-width:260px;">
+                    <label>📌 Temas disponibles</label>
+                    <div class="topic-grid" id="topicGrid"></div>
+                    <div class="config-actions">
+                        <button class="btn-sm btn-grey" onclick="selectAllTopics(true)">✅ Seleccionar todos</button>
+                        <button class="btn-sm btn-outline-red" onclick="selectAllTopics(false)">❌ Deseleccionar todos</button>
+                    </div>
+                </div>
+
+                <div class="config-col" style="min-width:160px; max-width:230px;">
+                    <label>📊 Número de preguntas</label>
+                    <select id="numQuestions">
+                        <option value="10">10 preguntas</option>
+                        <option value="20" selected>20 preguntas</option>
+                        <option value="30">30 preguntas</option>
+                        <option value="40">40 preguntas</option>
+                        <option value="50">50 preguntas</option>
+                        <option value="100">100 preguntas</option>
+                        <option value="todos">Todas las disponibles</option>
+                    </select>
+                    <div style="margin-top:14px;">
+                        <span class="counter">📖 Disponibles: <strong id="availableCount">0</strong></span>
+                    </div>
+                </div>
+            </div>
+
+            <div style="margin-top:20px; text-align:center;">
+                <button class="btn-primary" onclick="loadQuestions()">🚀 Empezar Examen</button>
+            </div>
+        </div>
+
+        <div class="exam-progress" id="examProgress">
+            <div class="progress-top">
+                <span class="progress-label" id="progressLabel">0 de 0 respondidas</span>
+                <span class="progress-marked" id="progressMarked" style="display:none;">🚩 <span id="markedCount">0</span> marcada(s)</span>
+                <span class="progress-timer" id="examTimer">⏱️ 00:00</span>
+            </div>
+            <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        </div>
+
+        <div id="resultContainer"></div>
+
+        <div id="quizContainer">
+            <p class="empty-msg"><span class="big-emoji">🎯</span>Selecciona los temas y pulsa «Empezar Examen» para comenzar.</p>
+        </div>
+
+        <div style="text-align:center; margin-top:18px;">
+            <button id="submitBtn" class="btn-success" style="display:none;" onclick="checkAnswers()">
+                ✅ Corregir Examen
+            </button>
+        </div>
+    </div>
+
+    <!-- ============ VISTA ESTADÍSTICAS ============ -->
+    <div class="container view" id="view-stats">
+        <div id="statsContent"></div>
+    </div>
+
+    <!-- ============ VISTA AÑADIR PREGUNTAS ============ -->
+    <div class="container view" id="view-addq">
+        <div class="config-section">
+            <h3>➕ Añadir preguntas desde PDF</h3>
+            <p style="margin:0 0 14px; font-size:14px; color:var(--muted);">
+                Sube uno o varios PDF con el formato habitual (pregunta, opciones <em>a) b) c) d)</em>,
+                <em>Respuesta correcta:</em> y <em>Explicación:</em>). Se detectarán automáticamente los temas y
+                podrás revisar y confirmar el nombre antes de incorporarlos al banco.
+            </p>
+            <div class="config-actions" style="margin-top:0;">
+                <input type="file" id="pdfInput" accept="application/pdf,.pdf" multiple
+                       style="font-size:14px;">
+                <button class="btn-primary" style="padding:10px 22px; font-size:15px;" onclick="procesarPDFs()">📄 Procesar PDFs</button>
+            </div>
+            <div class="toast" id="pdfStatus"></div>
+        </div>
+
+        <div id="reviewContainer"></div>
+
+        <div id="manageContainer"></div>
+    </div>
+
+    <script>
+        const STORAGE_KEY = 'examenesTFA_v1';
+        const USERQ_KEY = 'preguntasUsuarioTFA_v1';
+        const DELETED_KEY = 'preguntasEliminadasTFA_v1';
+        let currentQuestions = [];
+        let markedForReview = new Set();   // índices marcados para revisar
+        let timerInterval = null;          // intervalo del cronómetro
+        let examStartTime = 0;             // marca de inicio (ms)
+        let examElapsed = 0;               // segundos transcurridos al corregir
+        let examEtiqueta = '';             // etiqueta del examen (p.ej. "Repaso de temas flojos")
+        let lastFailed = [];               // preguntas falladas del último examen (para falla-repite)
+
+        // ===================================================
+        //  BANCO DE PREGUNTAS (base + añadidas por el usuario)
+        // ===================================================
+        function getUserQuestions() {
+            try { return JSON.parse(localStorage.getItem(USERQ_KEY)) || []; }
+            catch (e) { return []; }
+        }
+        function setUserQuestions(arr) {
+            localStorage.setItem(USERQ_KEY, JSON.stringify(arr));
+        }
+        // Preguntas eliminadas individualmente (cubre también las del fichero base): {topic, nq}
+        function getDeleted() {
+            try { return JSON.parse(localStorage.getItem(DELETED_KEY)) || []; }
+            catch (e) { return []; }
+        }
+        function setDeleted(arr) {
+            localStorage.setItem(DELETED_KEY, JSON.stringify(arr));
+        }
+        function getBank() {
+            const base = (typeof questionsDB !== 'undefined') ? questionsDB : [];
+            const user = getUserQuestions();
+            const baseNorm = new Set(base.map(q => normQ(q.question)));
+            let bank = user.length
+                ? base.concat(user.filter(q => !baseNorm.has(normQ(q.question))))  // evita duplicar lo que ya está en el fichero base
+                : base;
+            const del = getDeleted();
+            if (del.length) {
+                const delSet = new Set(del.map(d => d.topic + '||' + d.nq));
+                bank = bank.filter(q => !delSet.has(q.topic + '||' + normQ(q.question)));
+            }
+            return bank;
+        }
+
+        // ===================================================
+        //  PESTAÑAS
+        // ===================================================
+        function switchTab(tab) {
+            ['examen', 'stats', 'addq'].forEach(t => {
+                document.getElementById('view-' + t).classList.toggle('active', tab === t);
+            });
+            document.getElementById('tabExamenBtn').classList.toggle('active', tab === 'examen');
+            document.getElementById('tabStatsBtn').classList.toggle('active', tab === 'stats');
+            document.getElementById('tabAddqBtn').classList.toggle('active', tab === 'addq');
+            if (tab === 'stats') renderStats();
+            if (tab === 'addq') renderManage();
+        }
+
+        // ===================================================
+        //  TEMAS
+        // ===================================================
+        function extractNumber(topicString) {
+            const m = topicString.match(/Tema (?:Com[úu]n )?(\d+)/i);
+            const base = /Com[úu]n/i.test(topicString) ? 1000 : 0; // comunes al final
+            return (m ? parseInt(m[1], 10) : 9999) + base;
+        }
+
+        function populateTopics() {
+            const grid = document.getElementById('topicGrid');
+            const bank = getBank();
+            if (bank.length === 0) {
+                grid.innerHTML = '<p style="color:var(--red);">No hay preguntas. Carga <code>preguntas.js</code> o añade preguntas desde la pestaña «➕ Añadir Preguntas».</p>';
+                return;
+            }
+            const uniqueTopics = [...new Set(bank.map(q => q.topic))];
+            uniqueTopics.sort((a, b) => extractNumber(a) - extractNumber(b));
+
+            grid.innerHTML = '';
+            uniqueTopics.forEach(topic => {
+                const label = document.createElement('label');
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.value = topic;
+                checkbox.className = 'topic-checkbox';
+                checkbox.checked = true;
+                checkbox.addEventListener('change', updateAvailableCount);
+                label.appendChild(checkbox);
+                label.appendChild(document.createTextNode(' ' + topic));
+                grid.appendChild(label);
+            });
+            updateAvailableCount();
+        }
+
+        function updateAvailableCount() {
+            const selectedTopics = getSelectedTopics();
+            let count = selectedTopics.length ? getBank().filter(q => selectedTopics.includes(q.topic)).length : 0;
+            document.getElementById('availableCount').textContent = count;
+        }
+
+        function getSelectedTopics() {
+            return Array.from(document.querySelectorAll('.topic-checkbox:checked')).map(cb => cb.value);
+        }
+
+        function selectAllTopics(select) {
+            document.querySelectorAll('.topic-checkbox').forEach(cb => cb.checked = select);
+            updateAvailableCount();
+        }
+
+        // ===================================================
+        //  CARGAR PREGUNTAS
+        // ===================================================
+        function loadQuestions() {
+            const container = document.getElementById('quizContainer');
+            const selectedTopics = getSelectedTopics();
+            if (selectedTopics.length === 0) {
+                document.getElementById('resultContainer').innerHTML = '';
+                container.innerHTML = '<p class="empty-msg"><span class="big-emoji">⚠️</span>Debes seleccionar al menos un tema.</p>';
+                return;
+            }
+            let available = getBank().filter(q => selectedTopics.includes(q.topic));
+            if (available.length === 0) {
+                document.getElementById('resultContainer').innerHTML = '';
+                container.innerHTML = '<p class="empty-msg"><span class="big-emoji">⚠️</span>No hay preguntas para los temas seleccionados.</p>';
+                return;
+            }
+            const numValue = document.getElementById('numQuestions').value;
+            const shuffled = [...available].sort(() => Math.random() - 0.5);
+            let selected = numValue === 'todos' ? shuffled : shuffled.slice(0, Math.min(parseInt(numValue, 10), shuffled.length));
+            startExam(selected, '');
+        }
+
+        // Arranca un examen con un conjunto de preguntas dado (reutilizable: normal, repaso flojos, falla-repite)
+        function startExam(questions, etiqueta) {
+            const container = document.getElementById('quizContainer');
+            const resultContainer = document.getElementById('resultContainer');
+            const submitBtn = document.getElementById('submitBtn');
+
+            resultContainer.innerHTML = '';
+            submitBtn.style.display = 'none';
+
+            if (!questions || questions.length === 0) {
+                container.innerHTML = '<p class="empty-msg"><span class="big-emoji">⚠️</span>No hay preguntas disponibles para este examen.</p>';
+                return;
+            }
+
+            currentQuestions = questions;
+            markedForReview = new Set();
+            examEtiqueta = etiqueta || '';
+
+            container.innerHTML = '';
+            if (examEtiqueta) {
+                container.innerHTML = `<div class="exam-tag">🎯 ${escapeHTML(examEtiqueta)}</div>`;
+            }
+            questions.forEach((q, index) => {
+                const block = document.createElement('div');
+                block.className = 'question-block';
+                block.id = 'qblock' + index;
+                block.innerHTML = `
+                    <div class="q-head">
+                        <span class="q-num">${index + 1}</span>
+                        <p class="q-text">${escapeHTML(q.question)}</p>
+                        <button type="button" class="btn-review" id="rev${index}" title="Marcar para revisar" onclick="toggleReview(${index})">🚩</button>
+                    </div>
+                    <span class="q-topic">${escapeHTML(q.topic)}</span>
+                    <div class="options">
+                        ${q.options.map((opt, i) => `
+                            <label id="opt${index}_${i}">
+                                <input type="radio" name="question${index}" value="${i}" onchange="updateProgress()">
+                                ${escapeHTML(opt)}
+                            </label>
+                        `).join('')}
+                    </div>
+                    <div id="feedback${index}" class="feedback"></div>
+                `;
+                container.appendChild(block);
+            });
+
+            submitBtn.style.display = 'inline-block';
+            document.getElementById('examProgress').classList.add('show');
+            document.getElementById('progressMarked').style.display = 'none';
+            updateProgress();
+            startTimer();
+            switchTab('examen');
+            document.getElementById('examProgress').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function updateProgress() {
+            const total = currentQuestions.length;
+            if (!total) return;
+            let answered = 0;
+            for (let i = 0; i < total; i++) {
+                if (document.querySelector(`input[name="question${i}"]:checked`)) answered++;
+            }
+            document.getElementById('progressFill').style.width = (answered / total * 100) + '%';
+            document.getElementById('progressLabel').textContent = `${answered} de ${total} respondidas`;
+        }
+
+        // --- Marcar / desmarcar pregunta para revisar ---
+        function toggleReview(index) {
+            const btn = document.getElementById('rev' + index);
+            const block = document.getElementById('qblock' + index);
+            if (markedForReview.has(index)) { markedForReview.delete(index); }
+            else { markedForReview.add(index); }
+            const on = markedForReview.has(index);
+            btn.classList.toggle('on', on);
+            if (block) block.classList.toggle('marked', on);
+            const marcadas = document.getElementById('progressMarked');
+            document.getElementById('markedCount').textContent = markedForReview.size;
+            marcadas.style.display = markedForReview.size ? 'inline' : 'none';
+        }
+
+        // --- Cronómetro ---
+        function startTimer() {
+            examStartTime = Date.now();
+            examElapsed = 0;
+            const el = document.getElementById('examTimer');
+            el.textContent = '⏱️ 00:00';
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                const secs = Math.floor((Date.now() - examStartTime) / 1000);
+                el.textContent = '⏱️ ' + formatTiempo(secs);
+            }, 1000);
+        }
+        function stopTimer() {
+            if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+            examElapsed = Math.floor((Date.now() - examStartTime) / 1000);
+            return examElapsed;
+        }
+        function formatTiempo(secs) {
+            const m = Math.floor(secs / 60), s = secs % 60;
+            const p = n => String(n).padStart(2, '0');
+            return `${p(m)}:${p(s)}`;
+        }
+
+        // ===================================================
+        //  CORREGIR
+        // ===================================================
+        function checkAnswers() {
+            if (!currentQuestions.length) return;
+
+            // ¿Todas respondidas?
+            let sinResponder = [];
+            currentQuestions.forEach((q, index) => {
+                if (!document.querySelector(`input[name="question${index}"]:checked`)) sinResponder.push(index + 1);
+            });
+            if (sinResponder.length > 0) {
+                const seguir = confirm(`Te quedan ${sinResponder.length} pregunta(s) sin responder (${sinResponder.slice(0,8).join(', ')}${sinResponder.length>8?'…':''}).\n\nLas no respondidas contarán como falladas.\n\n¿Corregir de todas formas?`);
+                if (!seguir) return;
+            }
+
+            const tiempoSegundos = stopTimer();
+            let aciertos = 0;
+            const porTema = {};
+            const detalle = [];
+
+            currentQuestions.forEach((q, index) => {
+                const selectedEl = document.querySelector(`input[name="question${index}"]:checked`);
+                const elegida = selectedEl ? parseInt(selectedEl.value, 10) : null;
+                const acertada = elegida === q.correctAnswer;
+                if (acertada) aciertos++;
+
+                // estadística por tema
+                if (!porTema[q.topic]) porTema[q.topic] = { aciertos: 0, total: 0 };
+                porTema[q.topic].total++;
+                if (acertada) porTema[q.topic].aciertos++;
+
+                // bloquear radios y marcar opciones
+                document.querySelectorAll(`input[name="question${index}"]`).forEach(r => r.disabled = true);
+                const correctLabel = document.getElementById(`opt${index}_${q.correctAnswer}`);
+                if (correctLabel) {
+                    correctLabel.classList.add('opt-correct');
+                    correctLabel.insertAdjacentHTML('beforeend', '<span class="opt-tag">✓ Correcta</span>');
+                }
+                if (elegida !== null && !acertada) {
+                    const wrongLabel = document.getElementById(`opt${index}_${elegida}`);
+                    if (wrongLabel) {
+                        wrongLabel.classList.add('opt-wrong');
+                        wrongLabel.insertAdjacentHTML('beforeend', '<span class="opt-tag">✗ Tu respuesta</span>');
+                    }
+                }
+
+                // feedback
+                const fb = document.getElementById(`feedback${index}`);
+                fb.classList.add('show');
+                const letra = String.fromCharCode(65 + q.correctAnswer);
+                const correctText = escapeHTML(q.options[q.correctAnswer]);
+                if (acertada) {
+                    fb.className = 'feedback show correct';
+                    fb.innerHTML = `<div class="answer-line">✅ ¡Correcto!</div>${escapeHTML(q.feedback || '')}`;
+                } else {
+                    fb.className = 'feedback show incorrect';
+                    const tuRespuesta = elegida === null
+                        ? '<em>No respondiste esta pregunta.</em>'
+                        : '';
+                    fb.innerHTML = `<div class="answer-line">❌ ${elegida === null ? 'Sin responder' : 'Incorrecto'} — Respuesta correcta: ${letra}) ${correctText}</div>${tuRespuesta ? tuRespuesta + '<br>' : ''}${escapeHTML(q.feedback || '')}`;
+                }
+
+                detalle.push({
+                    topic: q.topic,
+                    question: q.question,
+                    opciones: q.options,
+                    correcta: q.correctAnswer,
+                    elegida: elegida,
+                    acertada: acertada,
+                    marcada: markedForReview.has(index)
+                });
+            });
+
+            // preguntas falladas (para el modo falla-repite)
+            lastFailed = currentQuestions.filter((q, i) => !detalle[i].acertada);
+
+            const total = currentQuestions.length;
+            const porcentaje = Math.round((aciertos / total) * 100);
+            const fallos = total - aciertos;
+
+            // Construir registro y guardar en localStorage
+            const ahora = new Date();
+            const registro = {
+                id: ahora.getTime(),
+                fechaISO: ahora.toISOString(),
+                fecha: formatFechaES(ahora),
+                numPreguntas: total,
+                aciertos, fallos, porcentaje,
+                tiempoSegundos,
+                etiqueta: examEtiqueta || '',
+                porTema, detalle
+            };
+            guardarEnLocalStorage(registro);
+
+            renderResultSummary(registro);
+            document.getElementById('submitBtn').style.display = 'none';
+            document.getElementById('resultContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // ===================================================
+        //  RESUMEN DE RESULTADOS
+        // ===================================================
+        function renderResultSummary(reg) {
+            let emoji = '💪';
+            if (reg.porcentaje >= 90) emoji = '🎉';
+            else if (reg.porcentaje >= 70) emoji = '👍';
+            else if (reg.porcentaje >= 50) emoji = '📖';
+
+            // breakdown por tema (ordenado peor → mejor)
+            const temas = Object.entries(reg.porTema)
+                .map(([t, d]) => ({ t, pct: Math.round(d.aciertos / d.total * 100), ...d }))
+                .sort((a, b) => a.pct - b.pct);
+
+            const breakdownHTML = temas.map(x => barItem(x.t, x.aciertos, x.total, x.pct)).join('');
+
+            const tiempo = reg.tiempoSegundos || 0;
+            const tiempoMedio = reg.numPreguntas ? Math.round(tiempo / reg.numPreguntas) : 0;
+
+            // Resumen de marcadas (índices marcados para revisar)
+            const marcadasIdx = (reg.detalle || []).map((d, i) => d.marcada ? (i + 1) : null).filter(x => x);
+            const marcadasHTML = marcadasIdx.length
+                ? `<div class="review-banner" style="margin-top:14px;">🚩 <strong>Marcaste ${marcadasIdx.length} pregunta(s) para revisar:</strong> nº ${marcadasIdx.join(', ')}. Repásalas más arriba (aparecen resaltadas).</div>`
+                : '';
+
+            // Botón falla-repite
+            const repiteHTML = reg.fallos > 0
+                ? `<button class="btn-primary" style="padding:12px 26px;font-size:15px;" onclick="repetirFalladas()">🔁 Repasar las ${reg.fallos} falladas</button>`
+                : `<div class="review-banner" style="background:var(--green-bg);border-color:#86efac;color:#14532d;margin-top:0;">🌟 ¡Perfecto! No has fallado ninguna.</div>`;
+
+            document.getElementById('resultContainer').innerHTML = `
+                <div class="result-summary">
+                    <div class="result-hero">
+                        ${reg.etiqueta ? `<div class="hero-tag">🎯 ${escapeHTML(reg.etiqueta)}</div>` : ''}
+                        <div class="emoji">${emoji}</div>
+                        <div class="big-score">${reg.porcentaje}%</div>
+                        <div class="ratio">${reg.aciertos} de ${reg.numPreguntas} preguntas correctas</div>
+                    </div>
+                    <div class="mini-stats">
+                        <div class="mini-card"><div class="num ok">${reg.aciertos}</div><div class="lbl">Aciertos</div></div>
+                        <div class="mini-card"><div class="num bad">${reg.fallos}</div><div class="lbl">Fallos</div></div>
+                        <div class="mini-card"><div class="num">⏱️ ${formatTiempo(tiempo)}</div><div class="lbl">Tiempo (${tiempoMedio}s/preg.)</div></div>
+                        <div class="mini-card"><div class="num">${Object.keys(reg.porTema).length}</div><div class="lbl">Temas</div></div>
+                    </div>
+                    ${marcadasHTML}
+                    <div class="save-row" style="margin-top:18px;">
+                        ${repiteHTML}
+                    </div>
+                    <div class="topic-breakdown">
+                        <h4>📊 Resultado por tema (de peor a mejor)</h4>
+                        ${breakdownHTML}
+                    </div>
+                    <div class="save-row">
+                        <button class="btn-save" onclick="guardarFichero(${reg.id})">🗂️ Guardar en carpeta (.json)</button>
+                        <button class="btn-save" onclick="descargarFichero(${reg.id})">⬇️ Descargar copia</button>
+                    </div>
+                    <p class="save-hint">El examen ya se ha guardado automáticamente para las estadísticas. Aquí puedes además dejar un fichero en la carpeta.</p>
+                    <div class="toast" id="saveToast"></div>
+                </div>
+            `;
+        }
+
+        // --- Modo falla-repite: nuevo examen solo con las falladas ---
+        function repetirFalladas() {
+            if (!lastFailed.length) return;
+            const reintento = [...lastFailed].sort(() => Math.random() - 0.5);
+            startExam(reintento, 'Repaso de preguntas falladas');
+        }
+
+        // --- Repaso de temas flojos: examen con los temas < 70% de acierto ---
+        function repasarFlojos() {
+            const examenes = getExamenes();
+            const agg = {};
+            examenes.forEach(ex => {
+                for (const [t, d] of Object.entries(ex.porTema || {})) {
+                    if (!agg[t]) agg[t] = { aciertos: 0, total: 0 };
+                    agg[t].aciertos += d.aciertos; agg[t].total += d.total;
+                }
+            });
+            const flojos = Object.entries(agg)
+                .filter(([t, d]) => d.total >= 1 && (d.aciertos / d.total) < 0.70)
+                .map(([t]) => t);
+            if (!flojos.length) {
+                alert('No hay temas flojos (todos superan el 70% de acierto). ¡Buen trabajo!');
+                return;
+            }
+            const bankSet = new Set(getBank().map(q => q.topic));
+            const flojosDisponibles = flojos.filter(t => bankSet.has(t));
+            let pool = getBank().filter(q => flojosDisponibles.includes(q.topic));
+            if (!pool.length) {
+                alert('Tus temas flojos no tienen preguntas disponibles en el banco actual.');
+                return;
+            }
+            const n = Math.min(20, pool.length);
+            const selected = [...pool].sort(() => Math.random() - 0.5).slice(0, n);
+            startExam(selected, `Repaso de temas flojos (${flojosDisponibles.length} tema/s)`);
+        }
+
+        function barItem(name, aciertos, total, pct) {
+            const cls = pct >= 70 ? 'good' : (pct >= 50 ? 'mid' : 'poor');
+            return `
+                <div class="bar-item">
+                    <div class="bar-head">
+                        <span class="bar-name" title="${escapeHTML(name)}">${escapeHTML(name)}</span>
+                        <span class="bar-val val-${cls}">${pct}% (${aciertos}/${total})</span>
+                    </div>
+                    <div class="bar-track"><div class="bar-fill ${cls}" style="width:${pct}%"></div></div>
+                </div>`;
+        }
+
+        // --- Gráfico SVG de evolución del % de acierto (examenes en orden ascendente) ---
+        function chartEvolucion(examenesAsc) {
+            const n = examenesAsc.length;
+            const W = 640, H = 230, pL = 36, pR = 628, pT = 14, pB = 188;
+            const x = i => n === 1 ? (pL + pR) / 2 : pL + (pR - pL) * i / (n - 1);
+            const y = v => pB - (v / 100) * (pB - pT);
+            const colorOf = p => p >= 70 ? 'var(--green)' : (p >= 50 ? 'var(--amber)' : 'var(--red)');
+
+            // rejilla 0/50/100
+            let grid = '';
+            [0, 50, 100].forEach(v => {
+                grid += `<line x1="${pL}" y1="${y(v)}" x2="${pR}" y2="${y(v)}" stroke="var(--border)" stroke-width="1"/>`;
+                grid += `<text x="${pL - 6}" y="${y(v) + 4}" text-anchor="end" font-size="11" fill="var(--muted)">${v}%</text>`;
+            });
+
+            const pts = examenesAsc.map((ex, i) => [x(i), y(ex.porcentaje)]);
+            const polyline = `<polyline fill="none" stroke="var(--primary)" stroke-width="2.5" stroke-linejoin="round" points="${pts.map(p => p.join(',')).join(' ')}"/>`;
+            const circles = examenesAsc.map((ex, i) => {
+                const [cx, cy] = pts[i];
+                return `<circle cx="${cx}" cy="${cy}" r="4.5" fill="${colorOf(ex.porcentaje)}" stroke="#fff" stroke-width="1.5">
+                            <title>${escapeHTML(ex.fecha)} — ${ex.porcentaje}% (${ex.aciertos}/${ex.numPreguntas})</title>
+                        </circle>`;
+            }).join('');
+
+            // etiquetas X: primera, última y, si caben, alguna intermedia (solo fecha corta)
+            const fechaCorta = ex => (ex.fecha || '').split(' ')[0];
+            let xlabels = '';
+            const idxs = n <= 6 ? examenesAsc.map((_, i) => i) : [0, Math.floor((n - 1) / 2), n - 1];
+            idxs.forEach(i => {
+                xlabels += `<text x="${x(i)}" y="${pB + 18}" text-anchor="middle" font-size="10" fill="var(--muted)">${escapeHTML(fechaCorta(examenesAsc[i]))}</text>`;
+            });
+
+            const media = Math.round(examenesAsc.reduce((s, e) => s + e.porcentaje, 0) / n);
+
+            return `<div class="chart-box">
+                <svg viewBox="0 0 ${W} ${H}" width="100%" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Evolución del porcentaje de acierto">
+                    ${grid}${polyline}${circles}${xlabels}
+                </svg>
+                <div class="chart-legend">Media: <strong>${media}%</strong> · ${n} exámenes · pasa el ratón por cada punto para ver el detalle</div>
+            </div>`;
+        }
+
+        // ===================================================
+        //  ALMACENAMIENTO
+        // ===================================================
+        function getExamenes() {
+            try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+            catch (e) { return []; }
+        }
+        function setExamenes(arr) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(arr));
+        }
+        function guardarEnLocalStorage(reg) {
+            const arr = getExamenes();
+            arr.push(reg);
+            setExamenes(arr);
+        }
+
+        function nombreFichero(reg) {
+            const d = new Date(reg.fechaISO);
+            const p = n => String(n).padStart(2, '0');
+            return `Examen_${p(d.getDate())}-${p(d.getMonth()+1)}-${d.getFullYear()}_${p(d.getHours())}-${p(d.getMinutes())}_${reg.numPreguntas}preguntas.json`;
+        }
+
+        async function guardarFichero(id) {
+            const reg = getExamenes().find(r => r.id === id);
+            if (!reg) return;
+            const toast = document.getElementById('saveToast');
+            const json = JSON.stringify(reg, null, 2);
+            const nombre = nombreFichero(reg);
+
+            if (window.showSaveFilePicker) {
+                try {
+                    const handle = await window.showSaveFilePicker({
+                        suggestedName: nombre,
+                        types: [{ description: 'Examen JSON', accept: { 'application/json': ['.json'] } }]
+                    });
+                    const w = await handle.createWritable();
+                    await w.write(json);
+                    await w.close();
+                    toast.className = 'toast ok';
+                    toast.textContent = '✅ Examen guardado como ' + nombre;
+                    return;
+                } catch (e) {
+                    if (e.name === 'AbortError') { toast.textContent = ''; return; }
+                    // si falla la API, caemos a descarga
+                }
+            }
+            descargarFichero(id);
+        }
+
+        function descargarFichero(id) {
+            const reg = getExamenes().find(r => r.id === id);
+            if (!reg) return;
+            const blob = new Blob([JSON.stringify(reg, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = nombreFichero(reg);
+            a.click();
+            URL.revokeObjectURL(url);
+            const toast = document.getElementById('saveToast');
+            if (toast) { toast.className = 'toast ok'; toast.textContent = '⬇️ Descargado ' + nombreFichero(reg); }
+        }
+
+        // ===================================================
+        //  ESTADÍSTICAS
+        // ===================================================
+        function renderStats() {
+            const cont = document.getElementById('statsContent');
+            const examenes = getExamenes().sort((a, b) => b.id - a.id);
+
+            if (examenes.length === 0) {
+                cont.innerHTML = `<p class="empty-msg"><span class="big-emoji">📊</span>
+                    Aún no has realizado ningún examen.<br>Corrige un examen y aquí verás tu evolución por temas.
+                    <br><br><button class="btn-sm btn-grey" onclick="importarExamenes()">📥 Importar exámenes (.json)</button></p>`;
+                return;
+            }
+
+            // Agregado global
+            let totalPreg = 0, totalAcie = 0;
+            const agregadoTema = {};
+            examenes.forEach(ex => {
+                totalPreg += ex.numPreguntas;
+                totalAcie += ex.aciertos;
+                for (const [t, d] of Object.entries(ex.porTema || {})) {
+                    if (!agregadoTema[t]) agregadoTema[t] = { aciertos: 0, total: 0 };
+                    agregadoTema[t].aciertos += d.aciertos;
+                    agregadoTema[t].total += d.total;
+                }
+            });
+            const pctGlobal = totalPreg ? Math.round(totalAcie / totalPreg * 100) : 0;
+
+            const temas = Object.entries(agregadoTema)
+                .map(([t, d]) => ({ t, pct: Math.round(d.aciertos / d.total * 100), ...d }))
+                .sort((a, b) => a.pct - b.pct || b.total - a.total);
+
+            const peores = temas.filter(x => x.pct < 70).slice(0, 5);
+
+            let html = `
+                <div class="stats-cards">
+                    <div class="stat-card"><div class="v">${examenes.length}</div><div class="l">Exámenes realizados</div></div>
+                    <div class="stat-card"><div class="v">${totalPreg}</div><div class="l">Preguntas respondidas</div></div>
+                    <div class="stat-card"><div class="v">${pctGlobal}%</div><div class="l">Acierto global</div></div>
+                    <div class="stat-card"><div class="v">${temas.length}</div><div class="l">Temas practicados</div></div>
+                </div>
+            `;
+
+            if (peores.length) {
+                html += `<div class="review-banner">
+                    <strong>🎯 Temas a repasar</strong> (menos del 70% de acierto):
+                    <ul>${peores.map(x => `<li>${escapeHTML(x.t)} — <strong>${x.pct}%</strong> (${x.aciertos}/${x.total})</li>`).join('')}</ul>
+                    <div style="margin-top:10px;"><button class="btn-primary" style="padding:11px 24px;font-size:15px;" onclick="repasarFlojos()">🎯 Generar examen de repaso de estos temas</button></div>
+                </div>`;
+            } else {
+                html += `<div class="review-banner" style="background:var(--green-bg);border-color:#86efac;color:#14532d;">
+                    <strong>🌟 ¡Excelente!</strong> Todos tus temas superan el 70% de acierto. ¡Sigue así!
+                </div>`;
+            }
+
+            // Gráfico de evolución
+            if (examenes.length >= 2) {
+                html += `<div class="section-title">📈 Evolución de tu acierto</div>`;
+                html += chartEvolucion([...examenes].sort((a, b) => a.id - b.id));
+            }
+
+            html += `<div class="section-title">📊 Acierto por tema (de peor a mejor)</div>`;
+            html += temas.map(x => barItem(x.t, x.aciertos, x.total, x.pct)).join('');
+
+            // Historial de exámenes
+            html += `<div class="section-title">🗂️ Historial de exámenes</div>`;
+            html += `<div class="stats-toolbar">
+                        <button class="btn-sm btn-grey" title="Recupera exámenes guardados en ficheros .json (los que descargas tras un examen o con «Exportar todo»). Útil para pasar tu historial a otro navegador u ordenador, o restaurar una copia." onclick="importarExamenes()">📥 Importar (.json)</button>
+                        <button class="btn-sm btn-grey" title="Descarga TODO tu historial de exámenes en un fichero .json de copia de seguridad." onclick="exportarTodo()">⬇️ Exportar todo</button>
+                        <button class="btn-sm btn-outline-red" onclick="borrarTodo()">🗑️ Borrar historial</button>
+                     </div>
+                     <p class="save-hint" style="text-align:left;margin-top:6px;">💡 <strong>Importar (.json)</strong>: recupera exámenes guardados en ficheros (los que descargas tras corregir o con «Exportar todo»). Sirve para llevar tu historial a otro equipo o restaurar una copia de seguridad.</p>`;
+            html += '<div class="exam-list">';
+            examenes.forEach(ex => {
+                const cls = ex.porcentaje >= 70 ? 'good' : (ex.porcentaje >= 50 ? 'mid' : 'poor');
+                const tiempoTxt = ex.tiempoSegundos ? ` · ⏱️ ${formatTiempo(ex.tiempoSegundos)}` : '';
+                const tagTxt = ex.etiqueta ? `<span class="ex-tag">🎯 ${escapeHTML(ex.etiqueta)}</span>` : '';
+                html += `
+                    <div class="exam-row">
+                        <div class="ex-date">${escapeHTML(ex.fecha)} ${tagTxt}
+                            <div class="ex-meta">${ex.numPreguntas} preguntas · ${ex.aciertos} aciertos / ${ex.fallos} fallos${tiempoTxt}</div>
+                        </div>
+                        <span class="ex-score ${cls}">${ex.porcentaje}%</span>
+                        <button class="ex-del" title="Eliminar este examen" onclick="borrarExamen(${ex.id})">🗑️</button>
+                    </div>`;
+            });
+            html += '</div>';
+
+            cont.innerHTML = html;
+        }
+
+        function borrarExamen(id) {
+            if (!confirm('¿Eliminar este examen del historial?')) return;
+            setExamenes(getExamenes().filter(r => r.id !== id));
+            renderStats();
+        }
+        function borrarTodo() {
+            if (!confirm('¿Seguro que quieres borrar TODO el historial de exámenes? Esta acción no se puede deshacer.')) return;
+            localStorage.removeItem(STORAGE_KEY);
+            renderStats();
+        }
+        function exportarTodo() {
+            const blob = new Blob([JSON.stringify(getExamenes(), null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            const d = new Date(); const p = n => String(n).padStart(2, '0');
+            a.href = url;
+            a.download = `HistorialExamenes_${p(d.getDate())}-${p(d.getMonth()+1)}-${d.getFullYear()}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+        function importarExamenes() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json,application/json';
+            input.multiple = true;
+            input.onchange = () => {
+                const archivos = Array.from(input.files);
+                let pendientes = archivos.length, añadidos = 0;
+                if (!pendientes) return;
+                const arr = getExamenes();
+                const idsExistentes = new Set(arr.map(r => r.id));
+                archivos.forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = () => {
+                        try {
+                            const data = JSON.parse(reader.result);
+                            const lista = Array.isArray(data) ? data : [data];
+                            lista.forEach(reg => {
+                                if (reg && reg.id && !idsExistentes.has(reg.id)) {
+                                    arr.push(reg); idsExistentes.add(reg.id); añadidos++;
+                                }
+                            });
+                        } catch (e) { /* ignorar fichero inválido */ }
+                        if (--pendientes === 0) {
+                            setExamenes(arr);
+                            renderStats();
+                            alert(`Importación completada. ${añadidos} examen(es) añadido(s).`);
+                        }
+                    };
+                    reader.readAsText(file);
+                });
+            };
+            input.click();
+        }
+
+        // ===================================================
+        //  AÑADIR PREGUNTAS DESDE PDF
+        // ===================================================
+        if (typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'pdf.worker.min.js';
+        }
+
+        let lotesDetectados = []; // resultados pendientes de confirmar
+        let omitirDuplicadas = true; // omitir preguntas que ya están en el banco
+
+        // --- Extraer texto de un PDF (File) usando pdf.js ---
+        async function extraerTextoPDF(file) {
+            const buf = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+            let texto = '';
+            for (let p = 1; p <= pdf.numPages; p++) {
+                const page = await pdf.getPage(p);
+                const content = await page.getTextContent();
+                let last = null;
+                for (const item of content.items) {
+                    if (!('str' in item)) continue;
+                    texto += item.str;
+                    if (item.hasEOL) texto += '\n';
+                    else if (item.str && !item.str.endsWith(' ')) texto += ' ';
+                    last = item;
+                }
+                texto += '\n';
+            }
+            return texto;
+        }
+
+        // --- Limpiar nombre de tema ---
+        function cleanName(s) {
+            return String(s || '')
+                .replace(/\s+/g, ' ')
+                .replace(/\s*\.\s*$/, '')
+                .trim();
+        }
+
+        // --- Parsear el texto de un PDF -> lista de { topic, questions[] } ---
+        function parsearTexto(texto, filenameBase) {
+            const rawLines = texto.split('\n');
+
+            const CHK = '\\u2705\\u2713\\u2714\\u2611\\u2714\\uFE0F'; // ✅ ✓ ✔ ☑
+            const reCheck   = new RegExp('[' + CHK + ']', 'u');
+            const reCheckG  = new RegExp('[' + CHK + ']', 'gu');
+            const reTopic   = /^\s*TEMA\b[^\n]*?\d+/i;              // cabecera de tema (TEMA N ...)
+            const reQuestion = /^\s*(\d{1,3})\s*[\.\)]\s*(\D.*)/;   // "1. ¿...?" o "10.¿...?" (sin espacio)
+            const reOption  = /^\s*([a-dA-D])\s*[\)\.]\s*(\S.*)/;   // "a) ..." o "a)..."
+            const reAnswer  = /^\s*Respuesta\s+correcta\s*:?\s*([a-dA-D])?/i;
+            const reMark    = new RegExp('^\\s*[' + CHK + ']+\\s*([a-dA-D])\\s*[\\)\\.]\\s*(.*)', 'u'); // "✓ c) ..."
+            const reExpl    = /^\s*(?:Explicaci[oó]n|Justificaci[oó]n)\s*:?\s*(.*)/i;
+            // Sub-encabezado de tema con emoji: "📚 1. Constitución…", "⚖️ 2. Ley General…"
+            const reSection = /^\s*\p{Extended_Pictographic}[\p{Extended_Pictographic}️‍\s]*(.+)$/u;
+            const stripChk  = s => String(s || '').replace(reCheckG, '').replace(/\s+/g, ' ').trim();
+
+            // 1) Agrupar en "unidades" lógicas (uniendo líneas continuadas)
+            const units = [];
+            let cur = null;
+            const push = () => { if (cur && cur.text.trim()) units.push(cur); cur = null; };
+
+            for (let raw of rawLines) {
+                const line = raw.replace(/\s+/g, ' ').trim();
+                if (!line) { push(); continue; }
+
+                let m;
+                if (reTopic.test(line) && !reQuestion.test(line)) {
+                    push(); cur = { type: 'TOPIC', text: line };
+                } else if ((m = line.match(reAnswer))) {
+                    push(); cur = { type: 'ANSWER', text: line, letter: m[1] ? m[1].toLowerCase() : null, feedback: '' };
+                } else if ((m = line.match(reMark))) {
+                    // Línea de respuesta marcada con ✓/✅ (con feedback opcional entre paréntesis)
+                    const resto = m[2] || '';
+                    const par = resto.match(/\(([^)]+)\)\s*$/);
+                    push(); cur = { type: 'ANSWER', text: line, letter: m[1].toLowerCase(), feedback: par ? par[1].trim() : '' };
+                } else if ((m = line.match(reExpl))) {
+                    push(); cur = { type: 'EXPL', text: m[1] || '' };
+                } else if ((m = line.match(reOption))) {
+                    push(); cur = { type: 'OPTION', text: stripChk(m[2] || ''), letter: m[1].toLowerCase(), correctInline: reCheck.test(line) };
+                } else if ((m = line.match(reQuestion))) {
+                    push(); cur = { type: 'QUESTION', text: m[2] || '', num: m[1] };
+                } else if ((m = line.match(reSection)) && /\p{L}/u.test(m[1])) {
+                    // Encabezado de sección con emoji => nuevo tema
+                    const titulo = m[1].replace(/^\s*\d{1,3}\s*[\.\)]\s*/, '').trim();
+                    if (titulo) { push(); cur = { type: 'TOPIC', text: titulo }; }
+                    else if (cur) { cur.text += ' ' + line; }
+                } else if (cur) {
+                    cur.text += ' ' + line;
+                } else {
+                    cur = { type: 'TEXT', text: line };
+                }
+            }
+            push();
+
+            // 2) Recorrer unidades construyendo preguntas por tema
+            const secciones = new Map();   // topic -> questions[]
+            let currentTopic = null;
+            let q = null;
+
+            const finalizar = () => {
+                if (q && q.options.length >= 2 && q.letter) {
+                    const idx = q.letter.charCodeAt(0) - 97;
+                    if (idx >= 0 && idx < q.options.length) {
+                        const topic = currentTopic || cleanName(filenameBase);
+                        if (!secciones.has(topic)) secciones.set(topic, []);
+                        secciones.get(topic).push({
+                            topic,
+                            question: stripChk(q.question),
+                            options: q.options.map(o => stripChk(o)),
+                            correctAnswer: idx,
+                            feedback: stripChk(q.feedback)
+                        });
+                    }
+                }
+                q = null;
+            };
+
+            for (const u of units) {
+                if (u.type === 'TOPIC') {
+                    finalizar();
+                    currentTopic = cleanName(u.text);
+                } else if (u.type === 'QUESTION') {
+                    finalizar();
+                    q = { question: u.text, options: [], optLetters: new Set(), letter: null, feedback: '' };
+                } else if (u.type === 'OPTION') {
+                    if (q) {
+                        const inlineCheck = u.correctInline || reCheck.test(u.text);
+                        if (q.optLetters.has(u.letter)) {
+                            // Letra repetida tras las opciones => marca la respuesta correcta
+                            q.letter = u.letter;
+                        } else {
+                            q.options.push(stripChk(u.text));
+                            q.optLetters.add(u.letter);
+                            if (inlineCheck) q.letter = u.letter;   // ✅ al final de la opción correcta
+                        }
+                    }
+                } else if (u.type === 'ANSWER') {
+                    if (q) {
+                        q.letter = u.letter || q.letter;
+                        if (u.feedback && !q.feedback) q.feedback = u.feedback;
+                    }
+                } else if (u.type === 'EXPL') {
+                    if (q) q.feedback = u.text;
+                }
+                // TEXT se ignora (teoría)
+            }
+            finalizar();
+
+            // 3) Nombre de tema sugerido por sección
+            const secciónUnica = secciones.size <= 1;
+            const fnTieneTitulo = /tema\s*\d+\s*[.:\-]\s*\S/i.test(filenameBase);
+
+            return [...secciones.entries()].map(([topic, questions]) => {
+                let sugerido = topic;
+                if (secciónUnica) {
+                    sugerido = fnTieneTitulo ? cleanName(filenameBase) : (topic || cleanName(filenameBase));
+                }
+                return { sugerido: cleanName(sugerido), detectado: topic, questions };
+            });
+        }
+
+        // --- Procesar los PDFs seleccionados ---
+        async function procesarPDFs() {
+            const input = document.getElementById('pdfInput');
+            const status = document.getElementById('pdfStatus');
+            const files = Array.from(input.files || []);
+
+            if (!files.length) {
+                status.className = 'toast err';
+                status.textContent = '⚠️ Selecciona al menos un PDF.';
+                return;
+            }
+            if (typeof pdfjsLib === 'undefined') {
+                status.className = 'toast err';
+                status.textContent = '❌ No se ha cargado pdf.js (pdf.min.js / pdf.worker.min.js deben estar junto a examen.html).';
+                return;
+            }
+
+            lotesDetectados = [];
+            status.className = 'toast';
+            status.textContent = '';
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                status.className = 'toast';
+                status.textContent = `⏳ Leyendo ${i + 1}/${files.length}: ${file.name}…`;
+                try {
+                    const texto = await extraerTextoPDF(file);
+                    const base = file.name.replace(/\.pdf$/i, '');
+                    const secciones = parsearTexto(texto, base);
+                    secciones.forEach(sec => {
+                        if (sec.questions.length > 0) {
+                            lotesDetectados.push({ archivo: file.name, ...sec, incluir: true });
+                        }
+                    });
+                } catch (e) {
+                    console.error('Error leyendo', file.name, e);
+                    lotesDetectados.push({ archivo: file.name, error: e.message, questions: [] });
+                }
+            }
+
+            const totalQ = lotesDetectados.reduce((s, l) => s + (l.questions ? l.questions.length : 0), 0);
+            status.className = totalQ ? 'toast ok' : 'toast err';
+            status.textContent = totalQ
+                ? `✅ Detectadas ${totalQ} pregunta(s) en ${lotesDetectados.filter(l => l.questions.length).length} tema(s). Revisa y guarda.`
+                : '⚠️ No se han detectado preguntas con el formato esperado. Revisa el PDF.';
+            renderReview();
+        }
+
+        // --- Mostrar panel de revisión antes de guardar ---
+        function renderReview() {
+            const cont = document.getElementById('reviewContainer');
+            if (!lotesDetectados.length) { cont.innerHTML = ''; return; }
+
+            // --- Análisis de duplicados ---
+            const bankNorm = new Set(getBank().map(q => normQ(q.question)));
+            const vistasImport = new Set();   // para detectar repetidas dentro de la propia importación
+            let totalNuevas = 0, totalEnBanco = 0, totalEnImport = 0;
+
+            lotesDetectados.forEach(lote => {
+                if (lote.error || !lote.questions) return;
+                lote.dupBanco = 0; lote.dupImport = 0; lote.nuevas = 0;
+                lote.questions.forEach(q => {
+                    const n = normQ(q.question);
+                    if (bankNorm.has(n)) { q._dup = 'banco'; lote.dupBanco++; totalEnBanco++; }
+                    else if (vistasImport.has(n)) { q._dup = 'import'; lote.dupImport++; totalEnImport++; }
+                    else { q._dup = null; lote.nuevas++; totalNuevas++; vistasImport.add(n); }
+                });
+            });
+            const totalDup = totalEnBanco + totalEnImport;
+
+            let html = '<div class="config-section"><h3>🔍 Revisión antes de guardar</h3>';
+
+            // Resumen + interruptor de duplicados
+            html += `<div class="dup-summary">
+                        <div>✅ <strong>${totalNuevas}</strong> nuevas`
+                        + (totalEnBanco ? ` &nbsp;·&nbsp; ♻️ <strong>${totalEnBanco}</strong> ya en el banco` : '')
+                        + (totalEnImport ? ` &nbsp;·&nbsp; 🔁 <strong>${totalEnImport}</strong> repetidas en estos PDFs` : '')
+                        + `</div>`;
+            if (totalDup) {
+                html += `<label class="dup-toggle">
+                            <input type="checkbox" id="omitirDupChk" ${omitirDuplicadas ? 'checked' : ''} onchange="setOmitirDup(this.checked)">
+                            Omitir las preguntas duplicadas (recomendado)
+                         </label>`;
+            }
+            html += '</div>';
+
+            const bankTopics = new Set(getBank().map(q => q.topic));
+            lotesDetectados.forEach((lote, idx) => {
+                if (lote.error) {
+                    html += `<div class="review-card err"><strong>❌ ${escapeHTML(lote.archivo)}</strong><br>
+                             <span style="font-size:13px;color:var(--red);">Error: ${escapeHTML(lote.error)}</span></div>`;
+                    return;
+                }
+                const yaExiste = bankTopics.has(lote.sugerido);
+                const noEncontrado = !lote.detectado;
+                const dupTotal = lote.dupBanco + lote.dupImport;
+                html += `
+                    <div class="review-card">
+                        <div class="review-top">
+                            <label class="review-inc">
+                                <input type="checkbox" ${lote.incluir ? 'checked' : ''} onchange="toggleLote(${idx}, this.checked)">
+                                Incluir
+                            </label>
+                            <span class="review-count">${lote.nuevas} nueva(s)</span>
+                            ${dupTotal ? `<span class="review-count dup">♻️ ${dupTotal} duplicada(s)</span>` : ''}
+                            <span class="review-file" title="${escapeHTML(lote.archivo)}">📄 ${escapeHTML(lote.archivo)}</span>
+                        </div>
+                        <label class="review-namelbl">Nombre del tema ${noEncontrado ? '<em>(no detectado en el PDF, ponle nombre)</em>' : '(confirma o edita)'}:</label>
+                        <input type="text" class="review-name" id="loteName${idx}" value="${escapeHTML(lote.sugerido)}"
+                               oninput="setLoteName(${idx}, this.value)">
+                        ${yaExiste ? '<div class="review-warn">⚠️ Ya existe un tema con este nombre: las preguntas se añadirán a ese tema.</div>' : ''}
+                        <details class="review-details">
+                            <summary>Ver preguntas detectadas</summary>
+                            ${lote.questions.slice(0, 60).map((q, i) => `
+                                <div class="review-q ${q._dup ? 'is-dup' : ''}">
+                                    <strong>${i + 1}. ${escapeHTML(q.question)}</strong>
+                                    ${q._dup ? `<span class="dup-badge">${q._dup === 'banco' ? '♻️ ya en el banco' : '🔁 repetida'}</span>` : ''}
+                                    <ul>${q.options.map((o, oi) => `<li class="${oi === q.correctAnswer ? 'q-ok' : ''}">${escapeHTML(o)}${oi === q.correctAnswer ? ' ✓' : ''}</li>`).join('')}</ul>
+                                    ${q.feedback ? `<div class="review-fb">💡 ${escapeHTML(q.feedback)}</div>` : ''}
+                                </div>
+                            `).join('')}
+                            ${lote.questions.length > 60 ? `<p style="color:var(--muted);font-size:13px;">… y ${lote.questions.length - 60} más</p>` : ''}
+                        </details>
+                    </div>`;
+            });
+
+            html += `<div class="save-row" style="margin-top:18px;">
+                        <button class="btn-success" style="padding:12px 26px;font-size:15px;" onclick="guardarLotes()">💾 Guardar en el banco</button>
+                        <button class="btn-grey btn-sm" onclick="cancelarLotes()">Cancelar</button>
+                     </div>`;
+            html += '</div>';
+            cont.innerHTML = html;
+        }
+
+        function setOmitirDup(val) { omitirDuplicadas = val; }
+
+        function toggleLote(idx, val) { lotesDetectados[idx].incluir = val; }
+        function setLoteName(idx, val) { lotesDetectados[idx].sugerido = val; }
+        function cancelarLotes() { lotesDetectados = []; document.getElementById('reviewContainer').innerHTML = ''; document.getElementById('pdfStatus').textContent=''; }
+
+        // --- Guardar los lotes confirmados en el banco (localStorage) ---
+        function guardarLotes() {
+            const userQ = getUserQuestions();
+            // Índice normalizado del banco (sin tildes/mayúsculas/puntuación) para detectar duplicados reales
+            const bankNorm = new Set(getBank().map(q => normQ(q.question)));
+            const seen = new Set();   // evita duplicados dentro de esta misma importación
+
+            let añadidas = 0, omitidasBanco = 0, repetidas = 0, temasAfectados = new Set();
+            lotesDetectados.forEach(lote => {
+                if (!lote.incluir || !lote.questions || lote.error) return;
+                const nombre = cleanName(lote.sugerido);
+                if (!nombre) return;
+                lote.questions.forEach(q => {
+                    const n = normQ(q.question);
+                    if (seen.has(n)) { repetidas++; return; }            // repetida en estos PDFs
+                    if (bankNorm.has(n) && omitirDuplicadas) { omitidasBanco++; return; } // ya en el banco
+                    seen.add(n);
+                    userQ.push({
+                        topic: nombre,
+                        question: q.question,
+                        options: q.options,
+                        correctAnswer: q.correctAnswer,
+                        feedback: q.feedback,
+                        _origen: 'pdf'
+                    });
+                    añadidas++;
+                    temasAfectados.add(nombre);
+                });
+            });
+
+            setUserQuestions(userQ);
+            lotesDetectados = [];
+            document.getElementById('reviewContainer').innerHTML = '';
+
+            const omitidas = omitidasBanco + repetidas;
+            const status = document.getElementById('pdfStatus');
+            status.className = 'toast ok';
+            status.textContent = `✅ Añadidas ${añadidas} pregunta(s) en ${temasAfectados.size} tema(s)`
+                + (omitidas ? ` · omitidas ${omitidas} duplicada(s)` + (omitidasBanco ? ` (${omitidasBanco} ya en el banco)` : '') + '.' : '.');
+
+            populateTopics();   // refrescar "Temas disponibles"
+            renderManage();
+        }
+
+        // --- Panel de gestión de preguntas añadidas ---
+        function renderManage() {
+            const cont = document.getElementById('manageContainer');
+            const userQ = getUserQuestions();
+            if (!userQ.length) {
+                cont.innerHTML = `<div class="config-section"><h3>📂 Preguntas añadidas</h3>
+                    <p style="font-size:14px;color:var(--muted);margin:0;">Aún no has añadido preguntas propias. Las que importes desde PDF aparecerán aquí y en «Temas disponibles».</p></div>`;
+                return;
+            }
+            const porTema = {};
+            userQ.forEach(q => { porTema[q.topic] = (porTema[q.topic] || 0) + 1; });
+            const temas = Object.entries(porTema).sort((a, b) => extractNumber(a[0]) - extractNumber(b[0]));
+
+            let html = `<div class="config-section"><h3>📂 Preguntas añadidas (${userQ.length} en ${temas.length} tema(s))</h3>`;
+            html += '<div class="exam-list">';
+            temas.forEach(([t, n]) => {
+                html += `<div class="exam-row">
+                            <div class="ex-date">${escapeHTML(t)}<div class="ex-meta">${n} pregunta(s) añadidas</div></div>
+                            <button class="ex-del" title="Eliminar las preguntas añadidas de este tema" onclick="borrarTemaAñadido('${encodeURIComponent(t)}')">🗑️</button>
+                         </div>`;
+            });
+            html += '</div>';
+            html += `<div class="stats-toolbar" style="margin-top:14px;">
+                        <button class="btn-sm btn-save" onclick="pedirPermanente()">💾 Hacer permanente (sobrescribir preguntas.js)</button>
+                        <button class="btn-sm btn-grey" onclick="buscarDuplicadosBanco()">🔍 Buscar duplicados en el banco</button>
+                        <button class="btn-sm btn-grey" onclick="exportarBanco()">⬇️ Exportar (descargar)</button>
+                        <button class="btn-sm btn-outline-red" onclick="borrarTodasAñadidas()">🗑️ Borrar todas las añadidas</button>
+                     </div>
+                     <div id="permWarn"></div>
+                     <div id="dupReport"></div>
+                     <p class="save-hint" style="text-align:left;">Las preguntas añadidas se guardan en este navegador y ya funcionan en exámenes y estadísticas. Con <strong>«Hacer permanente»</strong> se escriben directamente en <code>preguntas.js</code> (solo Chrome/Edge); «Exportar» las descarga por si prefieres reemplazar el fichero a mano.</p>`;
+            html += '</div>';
+            cont.innerHTML = html;
+        }
+
+        // --- Utilidad: buscar preguntas repetidas en TODO el banco ---
+        function buscarDuplicadosBanco() {
+            const rep = document.getElementById('dupReport');
+            if (!rep) return;
+            const bank = getBank();
+            const grupos = new Map();   // normQ -> [{q, origen}]
+            bank.forEach(q => {
+                const n = normQ(q.question);
+                if (!n) return;
+                if (!grupos.has(n)) grupos.set(n, []);
+                grupos.get(n).push(q);
+            });
+            const dups = [...grupos.values()].filter(g => g.length > 1);
+
+            if (!dups.length) {
+                rep.innerHTML = `<div class="review-warn" style="background:var(--green-bg);border:1px solid #86efac;color:#14532d;border-radius:10px;padding:12px 14px;margin-top:12px;">
+                    ✅ No se han encontrado preguntas repetidas en el banco (${bank.length} preguntas analizadas).</div>`;
+                return;
+            }
+
+            // ¿cuántas duplicadas son eliminables? (las añadidas redundantes)
+            const userQ = getUserQuestions();
+            const baseNorm = new Set(bank.filter(q => q._origen !== 'pdf').map(q => normQ(q.question)));
+            let eliminables = 0;
+            const vistasUser = new Set();
+            userQ.forEach(q => {
+                const n = normQ(q.question);
+                if (baseNorm.has(n) || vistasUser.has(n)) eliminables++;
+                else vistasUser.add(n);
+            });
+
+            const totalRepetidas = dups.reduce((s, g) => s + (g.length - 1), 0);
+            let html = `<div class="dup-report-box">
+                <strong>♻️ ${dups.length} pregunta(s) con duplicados</strong> (${totalRepetidas} copia(s) sobrantes de ${bank.length} preguntas).`;
+            if (eliminables) {
+                html += ` <button class="btn-sm btn-outline-red" style="margin-left:8px;" onclick="limpiarDuplicadosAnadidos()">🧹 Eliminar ${eliminables} duplicada(s) añadida(s)</button>`;
+            } else {
+                html += ` <span style="color:var(--muted);font-size:13px;"> (los duplicados están en <code>preguntas.js</code>; edítalo o expórtalo para limpiarlos)</span>`;
+            }
+            html += `<p style="font-size:12.5px;color:var(--muted);margin:8px 0 4px;">Pulsa 🗑️ junto a un tema para borrar esa pregunta de <strong>ese tema concreto</strong>.</p>`;
+            html += '<div class="dup-groups">';
+            dups.slice(0, 40).forEach(g => {
+                const nq = normQ(g[0].question);
+                // recuento por tema dentro del grupo
+                const porTema = {};
+                g.forEach(q => { porTema[q.topic] = (porTema[q.topic] || 0) + 1; });
+                const filas = Object.entries(porTema).map(([t, c]) => `
+                    <div class="dup-occ">
+                        <span class="dup-occ-topic">${escapeHTML(t)}${c > 1 ? ` <em>(×${c})</em>` : ''}</span>
+                        <button class="btn-sm btn-outline-red dup-occ-del" title="Borrar esta pregunta de «${escapeHTML(t)}»"
+                                onclick="eliminarOcurrencia('${encodeURIComponent(t)}','${encodeURIComponent(nq)}')">🗑️ Borrar de aquí</button>
+                    </div>`).join('');
+                html += `<div class="dup-group">
+                            <div class="dup-q">${escapeHTML(g[0].question)} <span class="dup-meta">(×${g.length})</span></div>
+                            <div class="dup-occs">${filas}</div>
+                         </div>`;
+            });
+            if (dups.length > 40) html += `<p style="color:var(--muted);font-size:13px;">… y ${dups.length - 40} grupo(s) más</p>`;
+            html += '</div></div>';
+            rep.innerHTML = html;
+        }
+
+        // --- Eliminar una ocurrencia concreta (una pregunta de un tema concreto) ---
+        function eliminarOcurrencia(tEnc, nqEnc) {
+            const topic = decodeURIComponent(tEnc);
+            const nq = decodeURIComponent(nqEnc);
+            if (!confirm(`¿Borrar esta pregunta del tema:\n"${topic}"?\n\n(No afecta a las copias que estén en otros temas.)`)) return;
+            // 1) si es una pregunta añadida por ti, quita UNA copia de ese tema
+            const user = getUserQuestions();
+            const idx = user.findIndex(q => q.topic === topic && normQ(q.question) === nq);
+            if (idx >= 0) {
+                user.splice(idx, 1);
+                setUserQuestions(user);
+            } else {
+                // 2) si está en el fichero base, márcala como eliminada
+                const del = getDeleted();
+                if (!del.some(d => d.topic === topic && d.nq === nq)) { del.push({ topic, nq }); setDeleted(del); }
+            }
+            populateTopics();
+            renderManage();            // reconstruye el panel (incluye #dupReport vacío)
+            buscarDuplicadosBanco();   // vuelve a rellenar el informe
+        }
+
+        // --- Eliminar las preguntas añadidas que son duplicado (de la base o entre sí) ---
+        function limpiarDuplicadosAnadidos() {
+            const bank = getBank();
+            const baseNorm = new Set(bank.filter(q => q._origen !== 'pdf').map(q => normQ(q.question)));
+            const vistas = new Set();
+            const userQ = getUserQuestions();
+            const limpio = [];
+            let eliminadas = 0;
+            userQ.forEach(q => {
+                const n = normQ(q.question);
+                if (baseNorm.has(n) || vistas.has(n)) { eliminadas++; return; }
+                vistas.add(n);
+                limpio.push(q);
+            });
+            if (!eliminadas) return;
+            if (!confirm(`Se eliminarán ${eliminadas} pregunta(s) añadida(s) que están duplicadas (en preguntas.js o repetidas entre sí). ¿Continuar?`)) return;
+            setUserQuestions(limpio);
+            populateTopics();
+            renderManage();
+        }
+
+        function borrarTemaAñadido(tEnc) {
+            const t = decodeURIComponent(tEnc);
+            if (!confirm(`¿Eliminar todas las preguntas añadidas del tema:\n"${t}"?`)) return;
+            setUserQuestions(getUserQuestions().filter(q => q.topic !== t));
+            populateTopics(); renderManage();
+        }
+        function borrarTodasAñadidas() {
+            if (!confirm('¿Eliminar TODAS las preguntas que has añadido? (no afecta a las de preguntas.js)')) return;
+            localStorage.removeItem(USERQ_KEY);
+            populateTopics(); renderManage();
+        }
+
+        // --- Guardar el "handle" del fichero preguntas.js en IndexedDB para recordarlo ---
+        function idbHandle(method, val) {
+            return new Promise((resolve, reject) => {
+                const open = indexedDB.open('tfaApp', 1);
+                open.onupgradeneeded = () => open.result.createObjectStore('handles');
+                open.onerror = () => reject(open.error);
+                open.onsuccess = () => {
+                    const db = open.result;
+                    const tx = db.transaction('handles', method === 'get' ? 'readonly' : 'readwrite');
+                    const store = tx.objectStore('handles');
+                    const req = method === 'get' ? store.get('preguntas') : store.put(val, 'preguntas');
+                    req.onsuccess = () => resolve(req.result);
+                    req.onerror = () => reject(req.error);
+                };
+            });
+        }
+
+        // --- Paso 1: mostrar la advertencia antes de sobrescribir ---
+        function pedirPermanente() {
+            const box = document.getElementById('permWarn');
+            if (!box) return;
+            const total = getBank().length;
+            box.innerHTML = `
+                <div class="perm-warn">
+                    <strong>⚠️ Vas a sobrescribir <code>preguntas.js</code></strong>
+                    <p>Se reemplazará el contenido del fichero por el banco completo actual (<strong>${total}</strong> preguntas),
+                       incluyendo las que has añadido. La primera vez tendrás que localizar el archivo <code>preguntas.js</code>
+                       (en la carpeta App Test) una sola vez; después lo recordará.</p>
+                    <div class="config-actions" style="margin-top:6px;">
+                        <button class="btn-success btn-sm" onclick="guardarPermanente()">✅ Sí, sobrescribir preguntas.js</button>
+                        <button class="btn-grey btn-sm" onclick="document.getElementById('permWarn').innerHTML=''">Cancelar</button>
+                    </div>
+                </div>`;
+        }
+
+        // --- Paso 2: escribir el fichero (se ejecuta con un clic = gesto válido) ---
+        async function guardarPermanente() {
+            const box = document.getElementById('permWarn');
+            if (!window.showOpenFilePicker) {
+                if (box) box.innerHTML = '';
+                alert('Tu navegador no permite escribir el fichero directamente (solo Chrome o Edge).\nVoy a descargarlo: reemplaza con él el preguntas.js de la carpeta.');
+                return exportarBanco();
+            }
+            const bank = getBank().map(({ _origen, ...q }) => q);
+            const contenido = 'const questionsDB = ' + JSON.stringify(bank, null, 2) + ';\n';
+            try {
+                let handle = await idbHandle('get').catch(() => null);
+                if (handle) {
+                    const perm = await handle.requestPermission({ mode: 'readwrite' });
+                    if (perm !== 'granted') handle = null;
+                }
+                if (!handle) {
+                    [handle] = await window.showOpenFilePicker({
+                        types: [{ description: 'JavaScript', accept: { 'text/javascript': ['.js'] } }],
+                        multiple: false
+                    });
+                    const perm = await handle.requestPermission({ mode: 'readwrite' });
+                    if (perm !== 'granted') { alert('Permiso denegado: no se ha podido escribir.'); return; }
+                    if (!/preguntas\.js$/i.test(handle.name)) {
+                        if (!confirm(`Has seleccionado "${handle.name}", no "preguntas.js". ¿Seguro que quieres sobrescribir ese archivo?`)) return;
+                    }
+                    await idbHandle('put', handle).catch(() => {});
+                }
+                const w = await handle.createWritable();
+                await w.write(contenido);
+                await w.close();
+                if (box) box.innerHTML = '';
+                alert(`✅ "${handle.name}" actualizado con ${bank.length} preguntas.\n\nLa próxima vez que abras o recargues la página se cargarán ya desde el fichero.`);
+            } catch (e) {
+                if (e.name === 'AbortError') return;
+                console.error(e);
+                alert('No se pudo guardar el fichero: ' + e.message + '\n\nPuedes usar «Exportar (descargar)» como alternativa.');
+            }
+        }
+
+        // --- Exportar el banco completo como preguntas.js (descarga) ---
+        async function exportarBanco() {
+            const bank = getBank().map(({ _origen, ...q }) => q); // sin metadatos internos
+            const contenido = 'const questionsDB = ' + JSON.stringify(bank, null, 2) + ';\n';
+            const nombre = 'preguntas.js';
+            if (window.showSaveFilePicker) {
+                try {
+                    const handle = await window.showSaveFilePicker({
+                        suggestedName: nombre,
+                        types: [{ description: 'JavaScript', accept: { 'text/javascript': ['.js'] } }]
+                    });
+                    const w = await handle.createWritable();
+                    await w.write(contenido); await w.close();
+                    alert('✅ Banco exportado como ' + nombre + '.\nSi lo has guardado sobre el original, las preguntas serán permanentes al recargar.');
+                    return;
+                } catch (e) { if (e.name === 'AbortError') return; }
+            }
+            const blob = new Blob([contenido], { type: 'text/javascript' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = nombre; a.click();
+            URL.revokeObjectURL(url);
+            alert('⬇️ Descargado preguntas.js con el banco completo (' + bank.length + ' preguntas).\nReemplaza el preguntas.js de la carpeta para hacerlo permanente.');
+        }
+
+        // ===================================================
+        //  UTILIDADES
+        // ===================================================
+        function formatFechaES(d) {
+            const p = n => String(n).padStart(2, '0');
+            return `${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} ${p(d.getHours())}:${p(d.getMinutes())}`;
+        }
+        // Normaliza el enunciado para comparar duplicados (sin tildes, mayúsculas ni puntuación)
+        function normQ(s) {
+            return String(s || '')
+                .toLowerCase()
+                .normalize('NFD').replace(/[̀-ͯ]/g, '')
+                .replace(/[^a-z0-9ñ]+/g, ' ')
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+        function escapeHTML(str) {
+            return String(str ?? '')
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+        }
+
+        // ===================================================
+        //  INIT
+        // ===================================================
+        window.onload = populateTopics;
+    </script>
+</body>
+</html>
