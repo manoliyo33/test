@@ -1,9 +1,4 @@
 // ============================================================
-// ==================== EXAMEN 2 - CASOS PRÁCTICOS ============
-// ============================================================
-
-// --- PREGUNTAS EXAMEN 2 (PROMOCIÓN INTERNA) - PRÁCTICO ---
-    // ============================================================
 // ==================== EXAMEN 2 ===============================
 // ============================================================
 // Técnico/a de Función Administrativa, Sistemas y Tecnología de la Información
@@ -1102,6 +1097,18 @@ const examen2_TFA = [
         correctAnswer: 1,
         feedback: "La normativa define dos órdenes posibles de disposición de los hilos (T568A y T568B)."
     },
+
+// ============================================================
+// ==================== EXAMEN 2 - CASOS PRÁCTICOS ============
+// ============================================================
+
+// --- PREGUNTAS EXAMEN 2 (PROMOCIÓN INTERNA) - PRÁCTICO ---
+    // ============================================================
+// ==================== EXAMEN 2 ===============================
+// ============================================================
+// Técnico/a de Función Administrativa, Sistemas y Tecnología de la Información
+// Promoción Interna 2025
+
 // --- PREGUNTAS EXAMEN 2 (PROMOCIÓN INTERNA) - TEÓRICO ---
     {
         topic: "Examen Técnico FAS TI - Promoción Interna",
