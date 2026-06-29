@@ -1,0 +1,16 @@
+{
+  "name": "Simulador Examen TFA · Sistemas de Información",
+  "short_name": "Simulador TFA",
+  "description": "Simulador de exámenes tipo test para la oposición de Técnico/a de Función Administrativa (Sistemas y TI) del SAS.",
+  "start_url": "./examen.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#eef2f7",
+  "theme_color": "#2563eb",
+  "lang": "es",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
